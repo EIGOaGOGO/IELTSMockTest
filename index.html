@@ -1,0 +1,982 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IELTS Academic Mock Test</title>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,wght@0,300;0,400;0,600;1,400&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --navy:#1a2744;--blue:#2563eb;--blue-light:#eff6ff;
+  --green:#059669;--green-light:#ecfdf5;
+  --amber-light:#fffbeb;--red:#dc2626;
+  --gray-50:#f8fafc;--gray-200:#e2e8f0;--gray-400:#94a3b8;
+  --gray-600:#475569;--gray-800:#1e293b;
+  --serif:'Source Serif 4',Georgia,serif;
+  --sans:'DM Sans',system-ui,sans-serif;
+  --radius:8px;--radius-lg:12px;
+}
+body{font-family:var(--sans);background:#fff;color:var(--gray-800);min-height:100vh}
+
+/* NAV */
+#nav{background:var(--navy);color:#fff;display:flex;align-items:center;justify-content:space-between;padding:0 24px;height:56px;position:sticky;top:0;z-index:100}
+#nav h1{font-size:15px;font-weight:600}
+.badge{background:rgba(255,255,255,.15);border-radius:4px;padding:2px 8px;font-size:12px;margin-left:8px}
+#timer{font-size:13px;font-weight:500;background:rgba(255,255,255,.1);border-radius:6px;padding:4px 12px;min-width:60px;text-align:center;transition:background .3s}
+#timer.warning{background:#dc2626}
+.ai-badge{display:inline-flex;align-items:center;gap:5px;background:#ede9fe;color:#5b21b6;border-radius:20px;padding:3px 10px;font-size:11px;font-weight:500}
+.pulse{width:6px;height:6px;background:#8b5cf6;border-radius:50%;animation:pulse 1.5s infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(1.3)}}
+
+/* TABS */
+#tabs{display:flex;border-bottom:2px solid var(--gray-200);background:#fff;position:sticky;top:56px;z-index:90}
+.tab{flex:1;padding:12px 6px;text-align:center;font-size:12px;font-weight:500;cursor:pointer;color:var(--gray-600);border-bottom:3px solid transparent;margin-bottom:-2px;transition:all .2s;display:flex;flex-direction:column;align-items:center;gap:2px}
+.tab.active{color:var(--navy);border-color:var(--navy)}
+.tab:hover:not(.active){color:var(--gray-800)}
+.tab-icon{font-size:16px}
+.tab-sub{font-size:10px;color:var(--gray-400)}
+.tab.done::after{content:' ✓';font-size:9px;color:var(--green)}
+
+#content{max-width:920px;margin:0 auto;padding:24px 20px 60px}
+.section{display:none}.section.active{display:block}
+
+/* SECTION HEADER */
+.sec-header{border-left:4px solid var(--navy);padding:12px 16px;background:var(--gray-50);border-radius:0 var(--radius) var(--radius) 0;margin-bottom:24px}
+.sec-header h2{font-size:16px;font-weight:600;color:var(--navy)}
+.sec-header p{font-size:13px;color:var(--gray-600);margin-top:4px}
+
+/* AUDIO CARD */
+.audio-card{border:1.5px solid var(--gray-200);border-radius:var(--radius-lg);padding:20px;margin-bottom:24px}
+.audio-header{display:flex;align-items:center;gap:12px;margin-bottom:16px}
+.part-badge{background:var(--navy);color:#fff;border-radius:6px;padding:4px 10px;font-size:12px;font-weight:600;flex-shrink:0}
+.audio-title{font-size:14px;font-weight:500}
+.audio-note{font-size:12px;color:var(--gray-400)}
+
+/* PLAYER */
+.player{background:var(--gray-50);border-radius:var(--radius);padding:14px 16px;margin-bottom:16px;display:flex;align-items:center;gap:12px}
+.play-btn{width:40px;height:40px;border-radius:50%;background:var(--navy);border:none;cursor:pointer;color:#fff;font-size:16px;flex-shrink:0;transition:background .15s;display:flex;align-items:center;justify-content:center}
+.play-btn:hover{background:var(--blue)}
+.play-btn.playing{background:var(--blue)}
+.progress-wrap{flex:1}
+.progress-bar{height:4px;background:var(--gray-200);border-radius:2px;overflow:hidden;margin-bottom:5px}
+.progress-fill{height:100%;background:var(--navy);border-radius:2px;width:0%;transition:width .4s linear}
+.now-speaking{font-size:11px;color:var(--gray-400);font-style:italic;min-height:14px}
+
+/* VOICE LEGEND */
+.voice-legend{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px}
+.voice-chip{display:inline-flex;align-items:center;gap:5px;border-radius:20px;padding:3px 10px;font-size:11px;font-weight:600;font-family:var(--sans)}
+.vc-A{background:#dbeafe;color:#1e40af}
+.vc-B{background:#fce7f3;color:#9d174d}
+.vc-C{background:#d1fae5;color:#065f46}
+.vc-dot{width:7px;height:7px;border-radius:50%}
+.vc-A .vc-dot{background:#1e40af}
+.vc-B .vc-dot{background:#9d174d}
+.vc-C .vc-dot{background:#065f46}
+
+/* TRANSCRIPT */
+.transcript-toggle{font-size:12px;color:var(--blue);cursor:pointer;background:none;border:none;padding:0;margin-bottom:10px;display:inline-flex;align-items:center;gap:4px}
+.transcript-box{background:var(--blue-light);border:1px solid #bfdbfe;border-radius:var(--radius);padding:14px 16px;font-size:13px;line-height:2;font-family:var(--serif);display:none;margin-bottom:14px}
+.transcript-box.open{display:block}
+.spk-tag{font-family:var(--sans);font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;padding:1px 7px;border-radius:3px;margin-right:5px;display:inline-block}
+.spk-A{background:#dbeafe;color:#1e40af}
+.spk-B{background:#fce7f3;color:#9d174d}
+.spk-C{background:#d1fae5;color:#065f46}
+
+/* QUESTIONS */
+.q-section{margin-bottom:28px}
+.q-label{font-size:13px;font-weight:600;color:var(--gray-600);text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px}
+.q-note{font-size:12px;color:var(--gray-400);margin-bottom:10px;font-style:italic}
+.q-block{border:1px solid var(--gray-200);border-radius:var(--radius);padding:16px;margin-bottom:10px;background:#fff}
+.q-block:focus-within{border-color:var(--blue)}
+.q-text{font-size:14px;margin-bottom:10px;line-height:1.65;font-family:var(--serif)}
+.q-num{display:inline-block;background:var(--navy);color:#fff;border-radius:4px;padding:1px 6px;font-size:11px;font-weight:600;margin-right:6px;font-family:var(--sans);vertical-align:2px}
+.mcq-option{display:flex;align-items:flex-start;gap:8px;padding:8px 10px;border-radius:6px;cursor:pointer;font-size:14px;font-family:var(--serif);transition:background .15s}
+.mcq-option:hover{background:var(--gray-50)}
+.mcq-option.selected{background:var(--blue-light)}
+.mcq-option input{accent-color:var(--navy);margin-top:3px;flex-shrink:0}
+.inline-fill{border:none;border-bottom:2px solid var(--navy);padding:2px 8px;font-size:14px;min-width:100px;outline:none;background:transparent;font-family:var(--serif);color:var(--gray-800)}
+.inline-fill:focus{border-color:var(--blue)}
+
+/* READING */
+.reading-layout{display:grid;grid-template-columns:1fr 1fr;border:1px solid var(--gray-200);border-radius:var(--radius-lg);overflow:hidden}
+.passage-pane{padding:20px;border-right:1px solid var(--gray-200);max-height:72vh;overflow-y:auto;font-family:var(--serif);font-size:14px;line-height:1.85}
+.passage-pane::-webkit-scrollbar{width:5px}
+.passage-pane::-webkit-scrollbar-thumb{background:var(--gray-200);border-radius:3px}
+.questions-pane{padding:20px;max-height:72vh;overflow-y:auto}
+.questions-pane::-webkit-scrollbar{width:5px}
+.questions-pane::-webkit-scrollbar-thumb{background:var(--gray-200);border-radius:3px}
+.passage-title{font-size:17px;font-weight:600;margin-bottom:5px;font-family:var(--sans)}
+.passage-source{font-size:11px;color:var(--gray-400);margin-bottom:16px;font-style:italic}
+.passage-p{margin-bottom:14px}
+.para-label{font-weight:700;margin-right:6px;color:var(--gray-600)}
+
+/* T/F/NG */
+.tfng{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.tfng-btn{border:1px solid var(--gray-200);border-radius:6px;padding:5px 12px;font-size:12px;font-weight:600;cursor:pointer;background:#fff;transition:all .15s;font-family:var(--sans)}
+.tfng-btn:hover{border-color:var(--gray-400)}
+.tfng-btn.sel-T{background:#059669;color:#fff;border-color:#059669}
+.tfng-btn.sel-F{background:#dc2626;color:#fff;border-color:#dc2626}
+.tfng-btn.sel-N{background:#d97706;color:#fff;border-color:#d97706}
+.match-select{border:1px solid var(--gray-200);border-radius:6px;padding:6px 10px;font-size:13px;background:#fff;cursor:pointer;outline:none;font-family:var(--sans);margin-top:8px}
+.match-select:focus{border-color:var(--blue)}
+
+/* WRITING */
+.task-band{display:flex;align-items:center;gap:8px;margin-bottom:12px}
+.task-badge{background:var(--navy);color:#fff;border-radius:6px;padding:3px 10px;font-size:12px;font-weight:600}
+.task-prompt{background:var(--gray-50);border:1px solid var(--gray-200);border-radius:var(--radius);padding:16px;margin-bottom:14px;font-family:var(--serif);font-size:14px;line-height:1.75}
+.task-prompt strong{font-family:var(--sans);font-size:13px;font-weight:600;color:var(--navy)}
+.writing-tips{border:1px solid #fef3c7;background:var(--amber-light);border-radius:var(--radius);padding:12px 14px;margin-bottom:14px;font-size:13px;color:#78350f}
+.writing-area{width:100%;min-height:220px;border:1px solid var(--gray-200);border-radius:var(--radius);padding:14px 16px;font-size:14px;font-family:var(--serif);line-height:1.8;resize:vertical;outline:none;transition:border-color .15s}
+.writing-area:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(37,99,235,.1)}
+.word-count{font-size:12px;color:var(--gray-400);margin-top:6px}
+
+/* SUBMIT BAR */
+.submit-bar{text-align:center;padding-top:24px;border-top:1px solid var(--gray-200);margin-top:28px;display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap}
+.btn-primary{background:var(--navy);color:#fff;border:none;border-radius:var(--radius);padding:11px 28px;font-size:14px;font-weight:500;cursor:pointer;transition:background .15s;font-family:var(--sans)}
+.btn-primary:hover{background:var(--blue)}
+.btn-sec{background:#fff;color:var(--gray-600);border:1px solid var(--gray-200);border-radius:var(--radius);padding:10px 20px;font-size:13px;font-weight:500;cursor:pointer;transition:all .15s;font-family:var(--sans)}
+.btn-sec:hover{border-color:var(--gray-400);color:var(--gray-800)}
+.result-box{background:var(--green-light);border:1px solid #6ee7b7;border-radius:var(--radius-lg);padding:18px;text-align:center;margin-top:20px;display:none;width:100%}
+.result-box.show{display:block}
+.result-score{font-size:36px;font-weight:600;color:var(--green)}
+.result-label{font-size:14px;color:var(--gray-600);margin-top:3px}
+.result-detail{font-size:13px;color:var(--gray-600);margin-top:12px;line-height:1.8;text-align:left}
+.ck{color:var(--green);font-weight:600}
+.xk{color:var(--red);font-weight:600}
+
+/* RESULTS PAGE */
+.overall-card{border:2px solid var(--navy);border-radius:var(--radius-lg);padding:28px;text-align:center;margin-bottom:24px;background:var(--gray-50)}
+.overall-label{font-size:13px;color:var(--gray-600);margin-bottom:6px}
+.overall-band{font-size:60px;font-weight:600;color:var(--navy);line-height:1}
+.overall-desc{font-size:14px;color:var(--gray-600);margin-top:8px;font-family:var(--serif);font-style:italic}
+.band-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:24px}
+.band-card{border:1px solid var(--gray-200);border-radius:var(--radius-lg);padding:20px 12px;text-align:center}
+.band-sec-name{font-size:12px;color:var(--gray-400);margin-bottom:8px;text-transform:uppercase;letter-spacing:.05em}
+.band-sec-val{font-size:28px;font-weight:600;color:var(--navy)}
+.band-sec-raw{font-size:12px;color:var(--gray-400);margin-top:3px}
+.band-bar{height:6px;background:var(--gray-200);border-radius:3px;margin-top:10px;overflow:hidden}
+.band-bar-fill{height:100%;background:var(--navy);border-radius:3px;width:0%;transition:width 1.1s ease}
+.breakdown-panel{border:1px solid var(--gray-200);border-radius:var(--radius-lg);padding:20px;margin-bottom:20px}
+.breakdown-panel h3{font-size:14px;font-weight:600;color:var(--navy);margin-bottom:16px}
+.skill-row{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--gray-200)}
+.skill-row:last-child{border-bottom:none}
+.skill-name{font-size:13px;font-weight:500;width:90px;flex-shrink:0}
+.skill-bar-wrap{flex:1;height:8px;background:var(--gray-200);border-radius:4px;overflow:hidden}
+.skill-bar-fill{height:100%;border-radius:4px;transition:width 1.3s ease}
+.skill-score{font-size:13px;font-weight:600;color:var(--navy);width:60px;text-align:right;flex-shrink:0}
+.tags-panel{border:1px solid var(--gray-200);border-radius:var(--radius-lg);padding:20px;margin-bottom:20px}
+.tags-panel h3{font-size:14px;font-weight:600;color:var(--navy);margin-bottom:12px}
+.tag{display:inline-block;border-radius:4px;padding:3px 10px;font-size:11px;font-weight:600;margin:3px}
+.tag-good{background:#d1fae5;color:#065f46}
+.tag-ok{background:#fef3c7;color:#78350f}
+.tag-weak{background:#fee2e2;color:#7f1d1d}
+.reco-panel{background:var(--gray-50);border:1px solid var(--gray-200);border-radius:var(--radius-lg);padding:20px}
+.reco-panel h3{font-size:14px;font-weight:600;color:var(--navy);margin-bottom:12px}
+.reco-item{font-size:13px;padding:5px 0 5px 16px;position:relative;line-height:1.65;color:var(--gray-800)}
+.reco-item::before{content:'•';position:absolute;left:4px;color:var(--navy)}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<div id="nav">
+  <div style="display:flex;align-items:center;gap:8px">
+    <span style="font-size:20px">🎓</span>
+    <h1>IELTS Academic Mock Test<span class="badge">Full Practice</span></h1>
+  </div>
+  <div style="display:flex;align-items:center;gap:12px">
+    <div class="ai-badge"><span class="pulse"></span>AI Voice Active</div>
+    <div id="timer">40:00</div>
+  </div>
+</div>
+
+<!-- TABS -->
+<div id="tabs">
+  <div class="tab active" id="tab-listening" onclick="showSection('listening')"><span class="tab-icon">🎧</span><span>Listening</span><span class="tab-sub">40 mins</span></div>
+  <div class="tab" id="tab-reading"   onclick="showSection('reading')">  <span class="tab-icon">📖</span><span>Reading</span>  <span class="tab-sub">60 mins</span></div>
+  <div class="tab" id="tab-writing"   onclick="showSection('writing')">  <span class="tab-icon">✍️</span><span>Writing</span>  <span class="tab-sub">60 mins</span></div>
+  <div class="tab" id="tab-results"   onclick="showSection('results')" style="border-left:1px solid var(--gray-200)"><span class="tab-icon">📊</span><span>Results</span><span class="tab-sub">Summary</span></div>
+</div>
+
+<div id="content">
+
+<!-- ══════════════════════════════════════ LISTENING ══════════════════════════════════════ -->
+<div id="listening" class="section active">
+<div class="sec-header">
+  <h2>IELTS Listening — All 4 Sections</h2>
+  <p>Listen to each recording once. In conversations, each speaker has a distinct AI voice. Answer questions as you listen.</p>
+</div>
+
+<!-- PART 1 -->
+<div class="audio-card">
+  <div class="audio-header">
+    <span class="part-badge">PART 1</span>
+    <div>
+      <div class="audio-title">Phone conversation: Booking a sports centre membership</div>
+      <div class="audio-note">Social context — two speakers</div>
+    </div>
+  </div>
+  <div class="voice-legend">
+    <span class="voice-chip vc-A"><span class="vc-dot"></span>Receptionist — Voice 1</span>
+    <span class="voice-chip vc-B"><span class="vc-dot"></span>James — Voice 2</span>
+  </div>
+  <div class="player">
+    <button class="play-btn" id="play1" onclick="toggleAudio(1)">▶</button>
+    <div class="progress-wrap">
+      <div class="progress-bar"><div class="progress-fill" id="prog1"></div></div>
+      <div class="now-speaking" id="status1">Press ▶ to begin</div>
+    </div>
+  </div>
+  <button class="transcript-toggle" onclick="toggleT('t1')">▼ Show transcript</button>
+  <div class="transcript-box" id="t1">
+    <span class="spk-tag spk-A">Receptionist</span>Good afternoon, Riverside Sports Centre. How can I help you?<br>
+    <span class="spk-tag spk-B">James</span>Hello, yes. I'd like to find out about joining as a member.<br>
+    <span class="spk-tag spk-A">Receptionist</span>Of course! Could I take your name first?<br>
+    <span class="spk-tag spk-B">James</span>Yes, it's James — James <u>Mitchell</u>. That's M-I-T-C-H-E-L-L.<br>
+    <span class="spk-tag spk-A">Receptionist</span>Thank you. And your date of birth?<br>
+    <span class="spk-tag spk-B">James</span>The fourth of <u>March</u>, 1998.<br>
+    <span class="spk-tag spk-A">Receptionist</span>We have three membership types: Standard at £32 a month, Premium at £48, or Family at £65.<br>
+    <span class="spk-tag spk-B">James</span>I'll go with the <u>Premium</u> membership please. Does that include the <u>swimming pool</u>?<br>
+    <span class="spk-tag spk-A">Receptionist</span>Yes, plus the gym and all fitness classes. You'll need two forms of ID and a passport photo. The induction is on <u>Tuesday</u> at 6pm. Your membership number will be <u>RSC 4417</u>.<br>
+    <span class="spk-tag spk-B">James</span>What's the car park situation?<br>
+    <span class="spk-tag spk-A">Receptionist</span>Free parking for members — just show your card at the <u>barrier</u>.
+  </div>
+  <div class="q-section">
+    <div class="q-label">Questions 1–5 — Form completion</div>
+    <div class="q-note">Write NO MORE THAN TWO WORDS AND/OR A NUMBER for each answer.</div>
+    <div class="q-block"><div class="q-text"><span class="q-num">1</span>Caller's surname: <input class="inline-fill" id="l1q1" placeholder="…"></div></div>
+    <div class="q-block"><div class="q-text"><span class="q-num">2</span>Month of birth: <input class="inline-fill" id="l1q2" placeholder="…"></div></div>
+    <div class="q-block"><div class="q-text"><span class="q-num">3</span>Type of membership chosen: <input class="inline-fill" id="l1q3" placeholder="…"></div></div>
+    <div class="q-block"><div class="q-text"><span class="q-num">4</span>Facility included in the membership: <input class="inline-fill" id="l1q4" placeholder="…"></div></div>
+    <div class="q-block"><div class="q-text"><span class="q-num">5</span>Membership number: <input class="inline-fill" id="l1q5" placeholder="…"></div></div>
+  </div>
+</div>
+
+<!-- PART 2 -->
+<div class="audio-card">
+  <div class="audio-header">
+    <span class="part-badge">PART 2</span>
+    <div>
+      <div class="audio-title">Community talk: Local recycling programme</div>
+      <div class="audio-note">Monologue — single speaker</div>
+    </div>
+  </div>
+  <div class="player">
+    <button class="play-btn" id="play2" onclick="toggleAudio(2)">▶</button>
+    <div class="progress-wrap">
+      <div class="progress-bar"><div class="progress-fill" id="prog2"></div></div>
+      <div class="now-speaking" id="status2">Press ▶ to begin</div>
+    </div>
+  </div>
+  <button class="transcript-toggle" onclick="toggleT('t2')">▼ Show transcript</button>
+  <div class="transcript-box" id="t2">
+    Good morning everyone, and welcome to the Greenwood Community Centre. I'm here to explain our new recycling programme launching next month.<br><br>
+    The programme has three aims: to reduce household <u>waste</u> by 40%, to increase community <u>awareness</u>, and to create new <u>volunteer</u> opportunities.<br><br>
+    Each household will receive four colour-coded bins. The <u>blue</u> bin is for paper and cardboard. The <u>green</u> bin is for glass and plastics. Food waste goes in the <u>brown</u> bin, and non-recyclables go in the <u>grey</u> bin.<br><br>
+    Collections take place every <u>Wednesday</u> morning. Missed collections can be dropped off at the <u>supermarket</u> car park on Station Road.<br><br>
+    Residents who recycle consistently for six months will receive a <u>discount</u> voucher. For more information, call the hotline on <u>0800 442 7766</u>.
+  </div>
+  <div class="q-section">
+    <div class="q-label">Questions 6–8 — Multiple choice</div>
+    <div class="q-block"><div class="q-text"><span class="q-num">6</span>What colour bin is used for glass and plastics?</div>
+      <div class="mcq-option" onclick="selectMCQ(this,'l2q6','A')"><input type="radio" name="l2q6">A &nbsp;Blue</div>
+      <div class="mcq-option" onclick="selectMCQ(this,'l2q6','B')"><input type="radio" name="l2q6">B &nbsp;Green</div>
+      <div class="mcq-option" onclick="selectMCQ(this,'l2q6','C')"><input type="radio" name="l2q6">C &nbsp;Brown</div>
+    </div>
+    <div class="q-block"><div class="q-text"><span class="q-num">7</span>What reward do consistent recyclers receive after six months?</div>
+      <div class="mcq-option" onclick="selectMCQ(this,'l2q7','A')"><input type="radio" name="l2q7">A &nbsp;A cash payment</div>
+      <div class="mcq-option" onclick="selectMCQ(this,'l2q7','B')"><input type="radio" name="l2q7">B &nbsp;A discount voucher</div>
+      <div class="mcq-option" onclick="selectMCQ(this,'l2q7','C')"><input type="radio" name="l2q7">C &nbsp;A free bin collection</div>
+    </div>
+    <div class="q-block"><div class="q-text"><span class="q-num">8</span>When do collections take place?</div>
+      <div class="mcq-option" onclick="selectMCQ(this,'l2q8','A')"><input type="radio" name="l2q8">A &nbsp;Tuesday evenings</div>
+      <div class="mcq-option" onclick="selectMCQ(this,'l2q8','B')"><input type="radio" name="l2q8">B &nbsp;Wednesday mornings</div>
+      <div class="mcq-option" onclick="selectMCQ(this,'l2q8','C')"><input type="radio" name="l2q8">C &nbsp;Thursday mornings</div>
+    </div>
+  </div>
+  <div class="q-section">
+    <div class="q-label">Questions 9–10 — Sentence completion</div>
+    <div class="q-block"><div class="q-text"><span class="q-num">9</span>Missed collections can be taken to the <input class="inline-fill" id="l2q9" placeholder="…"> car park on Station Road.</div></div>
+    <div class="q-block"><div class="q-text"><span class="q-num">10</span>The programme hotline number is <input class="inline-fill" id="l2q10" placeholder="…"></div></div>
+  </div>
+</div>
+
+<!-- PART 3 -->
+<div class="audio-card">
+  <div class="audio-header">
+    <span class="part-badge">PART 3</span>
+    <div>
+      <div class="audio-title">University tutorial: Research project on urban transport</div>
+      <div class="audio-note">Academic context — three speakers</div>
+    </div>
+  </div>
+  <div class="voice-legend">
+    <span class="voice-chip vc-A"><span class="vc-dot"></span>Dr Chen — Voice 1</span>
+    <span class="voice-chip vc-B"><span class="vc-dot"></span>Maya — Voice 2</span>
+    <span class="voice-chip vc-C"><span class="vc-dot"></span>Tom — Voice 3</span>
+  </div>
+  <div class="player">
+    <button class="play-btn" id="play3" onclick="toggleAudio(3)">▶</button>
+    <div class="progress-wrap">
+      <div class="progress-bar"><div class="progress-fill" id="prog3"></div></div>
+      <div class="now-speaking" id="status3">Press ▶ to begin</div>
+    </div>
+  </div>
+  <button class="transcript-toggle" onclick="toggleT('t3')">▼ Show transcript</button>
+  <div class="transcript-box" id="t3">
+    <span class="spk-tag spk-A">Dr Chen</span>So, how is the research project coming along?<br>
+    <span class="spk-tag spk-B">Maya</span>We've finished the data collection phase. We surveyed 200 commuters across three cities — London, Manchester, and Edinburgh.<br>
+    <span class="spk-tag spk-C">Tom</span>We were quite surprised by the results. We expected cost to be the main reason people avoid public transport, but it turned out that <u>reliability</u> was far more important.<br>
+    <span class="spk-tag spk-A">Dr Chen</span>Interesting. Did you encounter any problems with your methodology?<br>
+    <span class="spk-tag spk-B">Maya</span>The main issue was with our <u>sampling</u>. We initially targeted commuters at railway stations, which meant we under-represented people who use <u>buses</u>.<br>
+    <span class="spk-tag spk-C">Tom</span>We corrected this in the second phase by running an <u>online</u> survey, which gave us a more balanced sample.<br>
+    <span class="spk-tag spk-A">Dr Chen</span>Good thinking. What format will your final report take?<br>
+    <span class="spk-tag spk-B">Maya</span>We're planning a literature review, our <u>findings</u>, and a set of <u>recommendations</u> for local transport authorities.<br>
+    <span class="spk-tag spk-C">Tom</span>We'd also like to include an <u>infographic</u> to summarise the key statistics.<br>
+    <span class="spk-tag spk-A">Dr Chen</span>That sounds well structured. When can I expect a draft?<br>
+    <span class="spk-tag spk-B">Maya</span>We're aiming to submit by the <u>15th</u> of next month.<br>
+    <span class="spk-tag spk-A">Dr Chen</span>Perfect. Make sure your references follow the <u>Harvard</u> citation system.
+  </div>
+  <div class="q-section">
+    <div class="q-label">Questions 11–14 — Multiple choice</div>
+    <div class="q-block"><div class="q-text"><span class="q-num">11</span>What was the most important factor for commuters?</div>
+      <div class="mcq-option" onclick="selectMCQ(this,'l3q11','A')"><input type="radio" name="l3q11">A &nbsp;Cost of travel</div>
+      <div class="mcq-option" onclick="selectMCQ(this,'l3q11','B')"><input type="radio" name="l3q11">B &nbsp;Reliability of services</div>
+      <div class="mcq-option" onclick="selectMCQ(this,'l3q11','C')"><input type="radio" name="l3q11">C &nbsp;Comfort on vehicles</div>
+    </div>
+    <div class="q-block"><div class="q-text"><span class="q-num">12</span>What was the main problem with the initial data collection?</div>
+      <div class="mcq-option" onclick="selectMCQ(this,'l3q12','A')"><input type="radio" name="l3q12">A &nbsp;The sample size was too small</div>
+      <div class="mcq-option" onclick="selectMCQ(this,'l3q12','B')"><input type="radio" name="l3q12">B &nbsp;Bus users were under-represented</div>
+      <div class="mcq-option" onclick="selectMCQ(this,'l3q12','C')"><input type="radio" name="l3q12">C &nbsp;Only one city was included</div>
+    </div>
+    <div class="q-block"><div class="q-text"><span class="q-num">13</span>How did the students correct the sampling problem?</div>
+      <div class="mcq-option" onclick="selectMCQ(this,'l3q13','A')"><input type="radio" name="l3q13">A &nbsp;They visited more railway stations</div>
+      <div class="mcq-option" onclick="selectMCQ(this,'l3q13','B')"><input type="radio" name="l3q13">B &nbsp;They conducted an online survey</div>
+      <div class="mcq-option" onclick="selectMCQ(this,'l3q13','C')"><input type="radio" name="l3q13">C &nbsp;They reduced the number of cities</div>
+    </div>
+    <div class="q-block"><div class="q-text"><span class="q-num">14</span>What citation system must the students use?</div>
+      <div class="mcq-option" onclick="selectMCQ(this,'l3q14','A')"><input type="radio" name="l3q14">A &nbsp;APA</div>
+      <div class="mcq-option" onclick="selectMCQ(this,'l3q14','B')"><input type="radio" name="l3q14">B &nbsp;Chicago</div>
+      <div class="mcq-option" onclick="selectMCQ(this,'l3q14','C')"><input type="radio" name="l3q14">C &nbsp;Harvard</div>
+    </div>
+  </div>
+  <div class="q-section">
+    <div class="q-label">Questions 15–20 — Sentence completion</div>
+    <div class="q-note">Write NO MORE THAN ONE WORD for each answer.</div>
+    <div class="q-block"><div class="q-text"><span class="q-num">15</span>The students surveyed 200 <input class="inline-fill" id="l3q15" placeholder="…"> across three cities.</div></div>
+    <div class="q-block"><div class="q-text"><span class="q-num">16</span>The report will include findings and a set of <input class="inline-fill" id="l3q16" placeholder="…"> for transport authorities.</div></div>
+    <div class="q-block"><div class="q-text"><span class="q-num">17</span>The students plan to include an <input class="inline-fill" id="l3q17" placeholder="…"> to present key statistics visually.</div></div>
+    <div class="q-block"><div class="q-text"><span class="q-num">18</span>The draft will be submitted by the <input class="inline-fill" id="l3q18" placeholder="…"> of next month.</div></div>
+    <div class="q-block"><div class="q-text"><span class="q-num">19</span>The second phase used an <input class="inline-fill" id="l3q19" placeholder="…"> survey to improve the sample.</div></div>
+    <div class="q-block"><div class="q-text"><span class="q-num">20</span>Commuters were originally surveyed at <input class="inline-fill" id="l3q20" placeholder="…"> stations.</div></div>
+  </div>
+</div>
+
+<!-- PART 4 -->
+<div class="audio-card">
+  <div class="audio-header">
+    <span class="part-badge">PART 4</span>
+    <div>
+      <div class="audio-title">Academic lecture: The history and impact of the printing press</div>
+      <div class="audio-note">Academic monologue — lecture format</div>
+    </div>
+  </div>
+  <div class="player">
+    <button class="play-btn" id="play4" onclick="toggleAudio(4)">▶</button>
+    <div class="progress-wrap">
+      <div class="progress-bar"><div class="progress-fill" id="prog4"></div></div>
+      <div class="now-speaking" id="status4">Press ▶ to begin</div>
+    </div>
+  </div>
+  <button class="transcript-toggle" onclick="toggleT('t4')">▼ Show transcript</button>
+  <div class="transcript-box" id="t4">
+    Today I'd like to discuss one of the most transformative inventions in human history — the movable type printing press, developed by Johannes <u>Gutenberg</u> in the 1440s in the German city of Mainz.<br><br>
+    Before the printing press, books were copied by hand. This meant they were extraordinarily <u>expensive</u> and accessible only to the wealthy elite and religious institutions.<br><br>
+    Gutenberg's key innovation was his use of movable <u>metal</u> type, which could be arranged to form any text and then reused. His first major publication, the Gutenberg Bible, required printing around <u>180</u> copies, each containing over 1,200 pages.<br><br>
+    Within fifty years of Gutenberg's invention, over <u>eight million</u> books had been printed across Europe. <u>Literacy</u> rates began to rise steadily as reading material became more affordable.<br><br>
+    The printing press also accelerated the Protestant <u>Reformation</u>. Martin Luther's 95 Theses spread across Europe within weeks — something impossible without the press.<br><br>
+    The <u>standardisation</u> of knowledge was essential for scientific progress. <u>Errors</u> that had crept into manuscripts could now be identified and corrected systematically.<br><br>
+    In summary, the printing press fundamentally altered what it meant to be an <u>educated</u> citizen in the modern world.
+  </div>
+  <div class="q-section">
+    <div class="q-label">Questions 21–30 — Note completion</div>
+    <div class="q-note">Write NO MORE THAN TWO WORDS AND/OR A NUMBER for each answer.</div>
+    <div class="q-block" style="font-family:var(--serif);font-size:14px;line-height:2.5">
+      <strong style="font-family:var(--sans);font-size:12px;color:var(--gray-600);display:block;margin-bottom:8px">LECTURE NOTES: THE PRINTING PRESS</strong>
+      Inventor: Johannes <input class="inline-fill" id="l4q21" placeholder="…" style="min-width:90px"> — 1440s, Mainz.<br>
+      Before the press, books were <input class="inline-fill" id="l4q22" placeholder="…" style="min-width:90px"> and only accessible to elites.<br>
+      Key innovation: movable <input class="inline-fill" id="l4q23" placeholder="…" style="min-width:60px"> type — reusable.<br>
+      First major publication: Gutenberg Bible — approximately <input class="inline-fill" id="l4q24" placeholder="…" style="min-width:60px"> copies.<br>
+      Within 50 years: over <input class="inline-fill" id="l4q25" placeholder="…" style="min-width:90px"> books printed across Europe.<br>
+      Social effect: <input class="inline-fill" id="l4q26" placeholder="…" style="min-width:80px"> rates began to rise.<br>
+      Religious effect: accelerated the Protestant <input class="inline-fill" id="l4q27" placeholder="…" style="min-width:100px">.<br>
+      Scientific effect: <input class="inline-fill" id="l4q28" placeholder="…" style="min-width:110px"> of knowledge was essential for progress.<br>
+      Manuscripts contained <input class="inline-fill" id="l4q29" placeholder="…" style="min-width:60px"> accumulated over centuries.<br>
+      The press changed what it meant to be an <input class="inline-fill" id="l4q30" placeholder="…" style="min-width:80px"> citizen.
+    </div>
+  </div>
+</div>
+
+<div class="submit-bar">
+  <button class="btn-sec" onclick="checkListening()">Check answers</button>
+  <button class="btn-primary" onclick="showSection('reading')">Next: Reading →</button>
+  <div class="result-box" id="listen-result">
+    <div class="result-score" id="listen-score">—</div>
+    <div class="result-label">Listening Score (out of 30)</div>
+    <div class="result-detail" id="listen-detail"></div>
+  </div>
+</div>
+</div><!-- /listening -->
+
+<!-- ══════════════════════════════════════ READING ══════════════════════════════════════ -->
+<div id="reading" class="section">
+<div class="sec-header"><h2>IELTS Academic Reading — Passage 1</h2><p>Read the passage carefully. Answer all questions using information from the passage only.</p></div>
+<div class="reading-layout">
+  <div class="passage-pane">
+    <div class="passage-title">The Urban Heat Island Effect</div>
+    <div class="passage-source">Adapted from Environmental Science Review, 2022</div>
+    <p class="passage-p"><span class="para-label">A</span>Cities across the world are experiencing temperatures considerably higher than their surrounding rural areas — a phenomenon scientists have termed the <em>urban heat island</em> (UHI) effect. First documented in London by Luke Howard in the early nineteenth century, the UHI effect occurs primarily because urban materials such as concrete, asphalt, and brick absorb and retain heat far more effectively than the vegetation and soil found in rural landscapes.</p>
+    <p class="passage-p"><span class="para-label">B</span>The consequences of the UHI effect are wide-ranging. During heatwaves, urban populations face significantly elevated health risks compared with rural dwellers. Studies conducted across European cities during the 2003 heatwave — which killed an estimated 70,000 people — found that mortality rates in city centres were as much as three times higher than in suburban zones. Beyond human health, the UHI effect increases energy demand substantially, as residents and businesses rely more heavily on air conditioning systems.</p>
+    <p class="passage-p"><span class="para-label">C</span>There are several factors that intensify the UHI effect. Dark surfaces absorb more solar radiation than lighter alternatives. The dense arrangement of buildings creates urban "canyons" that trap heat by limiting the sky view factor. Human activities including transportation and industrial processes also release considerable quantities of heat directly into the atmosphere.</p>
+    <p class="passage-p"><span class="para-label">D</span>Planners and architects have developed numerous mitigation strategies. Green roofs have been shown to reduce surface temperatures by up to 30 degrees Celsius. Cool pavements using reflective materials deflect solar radiation rather than absorbing it. Urban parks and tree-lined streets create natural cooling through the process of <em>evapotranspiration</em> — the release of water vapour from plants.</p>
+    <p class="passage-p"><span class="para-label">E</span>Cities in East Asia have been particularly active in implementing UHI mitigation. Singapore's approach — integrating greenery vertically into skyscrapers through "biophilic design" — has attracted global attention. Tokyo has mandated cool roofs on new public buildings since 2000, reporting a measurable reduction in peak summer temperatures. However, critics argue that individual building-level interventions have limited impact without coordinated city-wide planning policies.</p>
+    <p class="passage-p"><span class="para-label">F</span>As global average temperatures continue to rise, the UHI effect is projected to intensify. Researchers predict that some cities may experience mean summer temperatures as much as 8°C above pre-industrial baselines by 2100. This makes addressing the urban heat island not merely a matter of comfort but one of urban survival.</p>
+  </div>
+  <div class="questions-pane">
+    <div class="q-section">
+      <div class="q-label">Questions 1–6 — True / False / Not Given</div>
+      <div class="q-note">T = True &nbsp; F = False &nbsp; NG = Not Given</div>
+      <div class="q-block"><div class="q-text"><span class="q-num">1</span>Luke Howard first observed the UHI effect in London.</div><div class="tfng" id="rq1"><button class="tfng-btn" onclick="setTFNG('rq1','T',this)">T</button><button class="tfng-btn" onclick="setTFNG('rq1','F',this)">F</button><button class="tfng-btn" onclick="setTFNG('rq1','N',this)">NG</button></div></div>
+      <div class="q-block"><div class="q-text"><span class="q-num">2</span>Rural populations suffered higher mortality than city residents during the 2003 heatwave.</div><div class="tfng" id="rq2"><button class="tfng-btn" onclick="setTFNG('rq2','T',this)">T</button><button class="tfng-btn" onclick="setTFNG('rq2','F',this)">F</button><button class="tfng-btn" onclick="setTFNG('rq2','N',this)">NG</button></div></div>
+      <div class="q-block"><div class="q-text"><span class="q-num">3</span>Dark surfaces in cities absorb more solar radiation than lighter materials.</div><div class="tfng" id="rq3"><button class="tfng-btn" onclick="setTFNG('rq3','T',this)">T</button><button class="tfng-btn" onclick="setTFNG('rq3','F',this)">F</button><button class="tfng-btn" onclick="setTFNG('rq3','N',this)">NG</button></div></div>
+      <div class="q-block"><div class="q-text"><span class="q-num">4</span>Green roofs cost more than traditional roofing materials.</div><div class="tfng" id="rq4"><button class="tfng-btn" onclick="setTFNG('rq4','T',this)">T</button><button class="tfng-btn" onclick="setTFNG('rq4','F',this)">F</button><button class="tfng-btn" onclick="setTFNG('rq4','N',this)">NG</button></div></div>
+      <div class="q-block"><div class="q-text"><span class="q-num">5</span>Tokyo made cool roofs compulsory on new public buildings in 2000.</div><div class="tfng" id="rq5"><button class="tfng-btn" onclick="setTFNG('rq5','T',this)">T</button><button class="tfng-btn" onclick="setTFNG('rq5','F',this)">F</button><button class="tfng-btn" onclick="setTFNG('rq5','N',this)">NG</button></div></div>
+      <div class="q-block"><div class="q-text"><span class="q-num">6</span>Some cities may be 8°C warmer than pre-industrial levels by 2100.</div><div class="tfng" id="rq6"><button class="tfng-btn" onclick="setTFNG('rq6','T',this)">T</button><button class="tfng-btn" onclick="setTFNG('rq6','F',this)">F</button><button class="tfng-btn" onclick="setTFNG('rq6','N',this)">NG</button></div></div>
+    </div>
+    <div class="q-section">
+      <div class="q-label">Questions 7–9 — Matching paragraphs</div>
+      <div class="q-note">Match each idea to a paragraph (A–F).</div>
+      <div class="q-block"><div class="q-text"><span class="q-num">7</span>Physical factors that worsen the UHI effect</div><select class="match-select" id="rq7"><option value="">— Select —</option><option>A</option><option>B</option><option>C</option><option>D</option><option>E</option><option>F</option></select></div>
+      <div class="q-block"><div class="q-text"><span class="q-num">8</span>Cities actively reducing urban heat</div><select class="match-select" id="rq8"><option value="">— Select —</option><option>A</option><option>B</option><option>C</option><option>D</option><option>E</option><option>F</option></select></div>
+      <div class="q-block"><div class="q-text"><span class="q-num">9</span>A warning about future temperature increases</div><select class="match-select" id="rq9"><option value="">— Select —</option><option>A</option><option>B</option><option>C</option><option>D</option><option>E</option><option>F</option></select></div>
+    </div>
+    <div class="q-section">
+      <div class="q-label">Questions 10–13 — Summary completion</div>
+      <div class="q-note">Choose ONE WORD from the passage for each answer.</div>
+      <div class="q-block" style="font-family:var(--serif);font-size:14px;line-height:2.2">
+        Urban areas are hotter than rural zones because materials like <input class="inline-fill" id="rq10" placeholder="…" style="min-width:80px"> absorb heat. This raises health risks and increases <input class="inline-fill" id="rq11" placeholder="…" style="min-width:80px"> demand. Solutions include green roofs, reflective <input class="inline-fill" id="rq12" placeholder="…" style="min-width:80px">, and urban trees. Critics say individual changes are not enough without city-wide <input class="inline-fill" id="rq13" placeholder="…" style="min-width:80px"> policies.
+      </div>
+    </div>
+    <div class="submit-bar" style="border:none;margin-top:16px">
+      <button class="btn-sec" onclick="checkReading()">Check answers</button>
+      <button class="btn-primary" onclick="showSection('writing')">Next: Writing →</button>
+      <div class="result-box" id="read-result" style="width:100%">
+        <div class="result-score" id="read-score">—</div>
+        <div class="result-label">Reading Score (out of 13)</div>
+        <div class="result-detail" id="read-detail"></div>
+      </div>
+    </div>
+  </div>
+</div>
+</div><!-- /reading -->
+
+<!-- ══════════════════════════════════════ WRITING ══════════════════════════════════════ -->
+<div id="writing" class="section">
+<div class="sec-header"><h2>IELTS Academic Writing</h2><p>Task 1 ≈ 20 minutes (150+ words). Task 2 ≈ 40 minutes (250+ words).</p></div>
+
+<div style="margin-bottom:32px">
+  <div class="task-band"><span class="task-badge">TASK 1</span><span style="font-size:13px;color:var(--gray-600)">Minimum 150 words</span></div>
+  <div class="task-prompt">
+    <strong>The bar chart below shows the percentage of people in four countries who used the internet for shopping in 2010 and 2020.</strong><br><br>
+    Summarise the information by selecting and reporting the main features, and make comparisons where relevant.<br><br>
+    <div style="background:#fff;border:1px solid var(--gray-200);border-radius:6px;padding:14px;font-size:13px;font-family:var(--sans)">
+      <strong style="font-size:12px;color:var(--gray-600);display:block;margin-bottom:10px">INTERNET SHOPPING USAGE (% of population)</strong>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;font-size:12px">
+        <div><strong>UK:</strong> 2010 — 42% &nbsp;|&nbsp; 2020 — 79%</div>
+        <div><strong>Germany:</strong> 2010 — 38% &nbsp;|&nbsp; 2020 — 71%</div>
+        <div><strong>Brazil:</strong> 2010 — 18% &nbsp;|&nbsp; 2020 — 55%</div>
+        <div><strong>India:</strong> 2010 — 7% &nbsp;|&nbsp; 2020 — 38%</div>
+      </div>
+    </div>
+  </div>
+  <div class="writing-tips"><strong>Task 1 tips:</strong> Describe overall trends first. Compare countries. Use specific figures. Do NOT give opinions — just report what you see.</div>
+  <textarea class="writing-area" id="task1" oninput="updateWC('task1','wc1')" placeholder="Write your Task 1 answer here…"></textarea>
+  <div class="word-count">Word count: <span id="wc1">0</span> / 150 minimum</div>
+</div>
+
+<div>
+  <div class="task-band"><span class="task-badge">TASK 2</span><span style="font-size:13px;color:var(--gray-600)">Minimum 250 words — worth double marks</span></div>
+  <div class="task-prompt">
+    <strong>Write about the following topic:</strong><br><br>
+    Some people believe that technology has made modern life more complicated rather than simpler. Others feel that technology has greatly simplified our daily lives.<br><br>
+    <em>Discuss both views and give your own opinion.</em><br><br>
+    <span style="font-size:12px;color:var(--gray-400)">Give reasons and include relevant examples from your own knowledge or experience.</span>
+  </div>
+  <div class="writing-tips"><strong>Task 2 tips:</strong> Structure: Introduction → Body 1 (one view) → Body 2 (other view) → Your opinion → Conclusion. Use topic sentences, linking words, and specific examples.</div>
+  <textarea class="writing-area" style="min-height:300px" id="task2" oninput="updateWC('task2','wc2')" placeholder="Write your Task 2 essay here…"></textarea>
+  <div class="word-count">Word count: <span id="wc2">0</span> / 250 minimum</div>
+</div>
+
+<div class="submit-bar">
+  <button class="btn-sec" onclick="getAIFeedback()">Get AI feedback ↗</button>
+  <button class="btn-primary" onclick="submitAll()">Submit &amp; View Results →</button>
+</div>
+</div><!-- /writing -->
+
+<!-- ══════════════════════════════════════ RESULTS ══════════════════════════════════════ -->
+<div id="results" class="section">
+<div class="sec-header"><h2>Test Results Summary</h2><p>Estimated IELTS band scores based on all completed sections.</p></div>
+
+<div class="overall-card">
+  <div class="overall-label">Overall Estimated Band Score</div>
+  <div class="overall-band" id="overall-band">—</div>
+  <div class="overall-desc" id="overall-desc">Complete all sections and click Submit to see your score.</div>
+</div>
+
+<div class="band-grid">
+  <div class="band-card"><div class="band-sec-name">🎧 Listening</div><div class="band-sec-val" id="res-l-band">—</div><div class="band-sec-raw" id="res-l-raw">not checked</div><div class="band-bar"><div class="band-bar-fill" id="res-l-bar"></div></div></div>
+  <div class="band-card"><div class="band-sec-name">📖 Reading</div><div class="band-sec-val" id="res-r-band">—</div><div class="band-sec-raw" id="res-r-raw">not checked</div><div class="band-bar"><div class="band-bar-fill" id="res-r-bar"></div></div></div>
+  <div class="band-card"><div class="band-sec-name">✍️ Writing</div><div class="band-sec-val" id="res-w-band">—</div><div class="band-sec-raw" id="res-w-raw">not submitted</div><div class="band-bar"><div class="band-bar-fill" id="res-w-bar"></div></div></div>
+</div>
+
+<div class="breakdown-panel">
+  <h3>Score breakdown</h3>
+  <div class="skill-row"><div class="skill-name">Listening</div><div class="skill-bar-wrap"><div class="skill-bar-fill" id="bar-l" style="width:0%;background:var(--navy)"></div></div><div class="skill-score" id="score-l">—</div></div>
+  <div class="skill-row"><div class="skill-name">Reading</div><div class="skill-bar-wrap"><div class="skill-bar-fill" id="bar-r" style="width:0%;background:var(--blue)"></div></div><div class="skill-score" id="score-r">—</div></div>
+  <div class="skill-row"><div class="skill-name">Writing T1</div><div class="skill-bar-wrap"><div class="skill-bar-fill" id="bar-w1" style="width:0%;background:#6366f1"></div></div><div class="skill-score" id="score-w1">—</div></div>
+  <div class="skill-row"><div class="skill-name">Writing T2</div><div class="skill-bar-wrap"><div class="skill-bar-fill" id="bar-w2" style="width:0%;background:#8b5cf6"></div></div><div class="skill-score" id="score-w2">—</div></div>
+</div>
+
+<div class="tags-panel">
+  <h3>Performance at a glance</h3>
+  <div id="perf-tags"><span style="font-size:13px;color:var(--gray-400)">Complete the test to see your performance tags.</span></div>
+</div>
+
+<div class="reco-panel">
+  <h3>Recommendations</h3>
+  <div id="reco-items"><div class="reco-item">Complete all three sections, then submit to receive personalised recommendations.</div></div>
+</div>
+
+<div class="submit-bar" style="border-top:1px solid var(--gray-200);margin-top:24px;padding-top:24px">
+  <button class="btn-sec" onclick="getAIFeedback()">Get detailed AI feedback ↗</button>
+  <button class="btn-primary" onclick="if(confirm('Reset all answers and start again?'))location.reload()">Start new test</button>
+</div>
+</div><!-- /results -->
+
+</div><!-- /content -->
+
+<script>
+/* ═══════════════════════════════════════════════════════════
+   DIALOGUE DATA
+   Conversations = array of {spk, name, text}
+   Monologues    = plain string
+═══════════════════════════════════════════════════════════ */
+const AUDIO = {
+  1: [
+    {spk:'A', name:'Receptionist', text:"Good afternoon, Riverside Sports Centre. How can I help you?"},
+    {spk:'B', name:'James',        text:"Hello, yes. I'd like to find out about joining as a member."},
+    {spk:'A', name:'Receptionist', text:"Of course! Could I take your name first?"},
+    {spk:'B', name:'James',        text:"Yes, it's James — James Mitchell. That's M-I-T-C-H-E-L-L."},
+    {spk:'A', name:'Receptionist', text:"Thank you. And your date of birth?"},
+    {spk:'B', name:'James',        text:"The fourth of March, 1998."},
+    {spk:'A', name:'Receptionist', text:"We have three membership types: Standard at 32 pounds a month, Premium at 48, or Family at 65."},
+    {spk:'B', name:'James',        text:"I'll go with the Premium membership please. Does that include the swimming pool?"},
+    {spk:'A', name:'Receptionist', text:"Yes, plus the gym and all fitness classes. You'll need two forms of ID and a passport photo. The induction is on Tuesday at 6pm. Your membership number will be RSC 4417."},
+    {spk:'B', name:'James',        text:"What's the car park situation?"},
+    {spk:'A', name:'Receptionist', text:"Free parking for members — just show your card at the barrier."}
+  ],
+  2: "Good morning everyone, and welcome to the Greenwood Community Centre. I'm here to explain our new recycling programme launching next month. The programme has three main aims: to reduce household waste by 40 per cent, to increase community awareness of environmental issues, and to create new volunteer opportunities for local residents. Each household will receive four colour-coded bins. The blue bin is for paper and cardboard. The green bin is for glass and plastics. Food waste goes in the brown bin, and non-recyclables go in the grey bin. Collections take place every Wednesday morning. Missed collections can be dropped off at the supermarket car park on Station Road. Residents who recycle consistently for six months will receive a discount voucher. For more information, call the hotline on 0800 442 7766.",
+  3: [
+    {spk:'A', name:'Dr Chen', text:"So, how is the research project coming along?"},
+    {spk:'B', name:'Maya',    text:"We've finished the data collection phase. We surveyed 200 commuters across three cities — London, Manchester, and Edinburgh."},
+    {spk:'C', name:'Tom',     text:"We were quite surprised by the results. We expected cost to be the main reason people avoid public transport, but it turned out that reliability was far more important."},
+    {spk:'A', name:'Dr Chen', text:"Interesting. Did you encounter any problems with your methodology?"},
+    {spk:'B', name:'Maya',    text:"The main issue was with our sampling. We initially targeted commuters at railway stations, which meant we under-represented people who use buses."},
+    {spk:'C', name:'Tom',     text:"We corrected this in the second phase by running an online survey, which gave us a more balanced sample."},
+    {spk:'A', name:'Dr Chen', text:"Good thinking. What format will your final report take?"},
+    {spk:'B', name:'Maya',    text:"We're planning a literature review, our findings, and a set of recommendations for local transport authorities."},
+    {spk:'C', name:'Tom',     text:"We'd also like to include an infographic to summarise the key statistics."},
+    {spk:'A', name:'Dr Chen', text:"That sounds well structured. When can I expect a draft?"},
+    {spk:'B', name:'Maya',    text:"We're aiming to submit by the 15th of next month."},
+    {spk:'A', name:'Dr Chen', text:"Perfect. Make sure your references follow the Harvard citation system."}
+  ],
+  4: "Today I'd like to discuss one of the most transformative inventions in human history — the movable type printing press, developed by Johannes Gutenberg in the 1440s in the German city of Mainz. Before the printing press, books were copied by hand. This meant they were extraordinarily expensive and accessible only to the wealthy elite and religious institutions. Gutenberg's key innovation was his use of movable metal type, which could be arranged to form any text and then reused. His first major publication, the Gutenberg Bible, required printing around 180 copies, each containing over 1,200 pages. Within fifty years of Gutenberg's invention, over eight million books had been printed across Europe. Literacy rates began to rise steadily as reading material became more affordable. The printing press also accelerated the Protestant Reformation. Martin Luther's 95 Theses spread across Europe within weeks — something impossible without the press. The standardisation of knowledge was essential for scientific progress. Errors that had crept into manuscripts could now be identified and corrected systematically. In summary, the printing press fundamentally altered what it meant to be an educated citizen in the modern world."
+};
+
+/* ═══════════════════════════════════════════════════════════
+   VOICE ENGINE
+   - Loads all browser voices
+   - Assigns a distinct voice per speaker slot (part + letter)
+   - Falls back gracefully if few voices available
+   - Uses pitch offset to further distinguish speakers
+═══════════════════════════════════════════════════════════ */
+const synth = window.speechSynthesis;
+let voicePool = [];   // English voices available
+const assigned = {};  // key "part-spkLetter" → voice object
+
+function loadVoices() {
+  const all = synth.getVoices();
+  // Prefer English; fall back to all
+  const en = all.filter(v => v.lang && v.lang.startsWith('en'));
+  voicePool = en.length >= 2 ? en : all;
+}
+if (synth.onvoiceschanged !== undefined) synth.onvoiceschanged = loadVoices;
+setTimeout(loadVoices, 200);
+
+function getVoice(part, spkLetter) {
+  const key = `${part}-${spkLetter}`;
+  if (assigned[key]) return assigned[key];
+  if (!voicePool.length) { loadVoices(); }
+  const pool = voicePool.length ? voicePool : synth.getVoices();
+  if (!pool.length) return null;
+
+  // Collect indices already used by OTHER speakers in this part
+  const usedIdx = Object.entries(assigned)
+    .filter(([k]) => k.startsWith(`${part}-`) && k !== key)
+    .map(([, v]) => pool.indexOf(v));
+
+  // Pick the next available index
+  let idx = 0;
+  while (usedIdx.includes(idx) && idx < pool.length - 1) idx++;
+  assigned[key] = pool[idx];
+  return pool[idx];
+}
+
+// Pitch offsets per speaker slot to maximise audible difference
+const PITCH = { A: 1.0, B: 1.18, C: 0.82, mono: 1.0 };
+
+/* ═══════════════════════════════════════════════════════════
+   PLAYBACK CONTROLLER
+═══════════════════════════════════════════════════════════ */
+let activePart = null;
+
+function toggleAudio(part) {
+  if (activePart === part) {
+    synth.cancel();
+    activePart = null;
+    setBtn(part, false);
+    setStatus(part, 'Stopped');
+    return;
+  }
+  // Stop any other playing audio
+  synth.cancel();
+  if (activePart !== null) { setBtn(activePart, false); }
+  activePart = part;
+  setBtn(part, true);
+
+  const data = AUDIO[part];
+  if (typeof data === 'string') {
+    playMonologue(part, data);
+  } else {
+    const totalWords = data.reduce((n, t) => n + t.text.split(' ').length, 0);
+    playTurn(part, data, 0, 0, totalWords);
+  }
+}
+
+function playMonologue(part, text) {
+  const pool = voicePool.length ? voicePool : synth.getVoices();
+  // Pick a distinct voice for monologue parts
+  const idx = (part === 2) ? Math.min(2, pool.length - 1) : Math.min(3, pool.length - 1);
+  const voice = pool[idx] || pool[0] || null;
+  const words = text.split(' ');
+  const u = new SpeechSynthesisUtterance(text);
+  u.rate = 0.87; u.pitch = PITCH.mono; u.volume = 1;
+  if (voice) u.voice = voice;
+  setStatus(part, 'Speaking…');
+  let wc = 0;
+  u.onboundary = e => {
+    if (e.name === 'word') setProgress(part, Math.min((++wc / words.length) * 100, 100));
+  };
+  u.onend = () => {
+    if (activePart !== part) return;
+    activePart = null; setBtn(part, false);
+    setProgress(part, 100); setStatus(part, 'Finished ✓');
+  };
+  synth.speak(u);
+}
+
+function playTurn(part, turns, idx, doneWords, totalWords) {
+  if (activePart !== part) return;
+  if (idx >= turns.length) {
+    activePart = null; setBtn(part, false);
+    setProgress(part, 100); setStatus(part, 'Finished ✓');
+    return;
+  }
+  const turn = turns[idx];
+  setStatus(part, `Now speaking: ${turn.name}`);
+
+  const words = turn.text.split(' ');
+  const u = new SpeechSynthesisUtterance(turn.text);
+  u.rate = 0.87; u.volume = 1;
+  u.pitch = PITCH[turn.spk] || 1.0;
+  const voice = getVoice(part, turn.spk);
+  if (voice) u.voice = voice;
+
+  let wc = 0;
+  u.onboundary = e => {
+    if (e.name === 'word') {
+      setProgress(part, Math.min(((doneWords + (++wc)) / totalWords) * 100, 100));
+    }
+  };
+  u.onend = () => {
+    if (activePart !== part) return;
+    // Natural pause between speaker turns (~350ms)
+    setTimeout(() => playTurn(part, turns, idx + 1, doneWords + words.length, totalWords), 350);
+  };
+  synth.speak(u);
+}
+
+function setBtn(part, playing) {
+  const b = document.getElementById('play' + part);
+  if (!b) return;
+  b.textContent = playing ? '⏸' : '▶';
+  b.classList.toggle('playing', playing);
+}
+function setProgress(part, pct) {
+  const f = document.getElementById('prog' + part);
+  if (f) f.style.width = pct + '%';
+}
+function setStatus(part, txt) {
+  const el = document.getElementById('status' + part);
+  if (el) el.textContent = txt;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   SECTION / TIMER
+═══════════════════════════════════════════════════════════ */
+const scores = { listening: null, reading: null, w1: 0, w2: 0 };
+const mcqAns = {}, tfngAns = {};
+
+const TIMER_INIT = { listening: 40*60, reading: 60*60, writing: 60*60, results: 0 };
+let timerVal = 40*60, timerInt = null;
+
+function resetTimer(sec) {
+  clearInterval(timerInt);
+  timerVal = TIMER_INIT[sec] || 0;
+  renderTimer();
+  if (timerVal > 0) {
+    timerInt = setInterval(() => { if (--timerVal <= 0) clearInterval(timerInt); renderTimer(); }, 1000);
+  }
+}
+function renderTimer() {
+  const m = Math.floor(timerVal / 60), s = timerVal % 60;
+  const el = document.getElementById('timer');
+  el.textContent = timerVal > 0 ? `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}` : '—:——';
+  el.classList.toggle('warning', timerVal > 0 && timerVal < 5*60);
+}
+resetTimer('listening');
+
+function showSection(id) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  document.getElementById('tab-' + id).classList.add('active');
+  resetTimer(id);
+  if (id === 'results') renderResults();
+}
+
+/* ═══════════════════════════════════════════════════════════
+   MCQ / TFNG / TRANSCRIPT
+═══════════════════════════════════════════════════════════ */
+function selectMCQ(el, name, val) {
+  document.querySelectorAll(`[onclick*="'${name}'"]`).forEach(o => o.classList.remove('selected'));
+  el.classList.add('selected');
+  el.querySelector('input').checked = true;
+  mcqAns[name] = val;
+}
+function setTFNG(id, val, btn) {
+  document.getElementById(id).querySelectorAll('.tfng-btn').forEach(b => b.className = 'tfng-btn');
+  btn.classList.add('sel-' + val);
+  tfngAns[id] = val;
+}
+function toggleT(id) {
+  const b = document.getElementById(id);
+  b.classList.toggle('open');
+  b.previousElementSibling.textContent = b.classList.contains('open') ? '▲ Hide transcript' : '▼ Show transcript';
+}
+
+/* ═══════════════════════════════════════════════════════════
+   ANSWER KEYS
+═══════════════════════════════════════════════════════════ */
+const LK = {
+  l1q1:{a:['mitchell'],t:'f'},         l1q2:{a:['march'],t:'f'},
+  l1q3:{a:['premium'],t:'f'},          l1q4:{a:['swimming pool','pool'],t:'f'},
+  l1q5:{a:['rsc4417','rsc 4417'],t:'f'},
+  l2q6:{a:'B',t:'m'},                  l2q7:{a:'B',t:'m'},               l2q8:{a:'B',t:'m'},
+  l2q9:{a:['supermarket'],t:'f'},      l2q10:{a:['0800 442 7766'],t:'f'},
+  l3q11:{a:'B',t:'m'},                 l3q12:{a:'B',t:'m'},
+  l3q13:{a:'B',t:'m'},                 l3q14:{a:'C',t:'m'},
+  l3q15:{a:['commuters'],t:'f'},       l3q16:{a:['recommendations'],t:'f'},
+  l3q17:{a:['infographic'],t:'f'},     l3q18:{a:['15th','15'],t:'f'},
+  l3q19:{a:['online'],t:'f'},          l3q20:{a:['railway'],t:'f'},
+  l4q21:{a:['gutenberg'],t:'f'},       l4q22:{a:['expensive'],t:'f'},
+  l4q23:{a:['metal'],t:'f'},           l4q24:{a:['180'],t:'f'},
+  l4q25:{a:['eight million'],t:'f'},   l4q26:{a:['literacy'],t:'f'},
+  l4q27:{a:['reformation'],t:'f'},     l4q28:{a:['standardisation','standardization'],t:'f'},
+  l4q29:{a:['errors'],t:'f'},          l4q30:{a:['educated'],t:'f'}
+};
+const RK = {
+  rq1:'T', rq2:'F', rq3:'T', rq4:'N', rq5:'T', rq6:'T',
+  rq7:'C', rq8:'E', rq9:'F',
+  rq10:['concrete','asphalt','brick'], rq11:'energy',
+  rq12:'pavements', rq13:'planning'
+};
+
+function checkListening() {
+  let s = 0, d = '';
+  Object.entries(LK).forEach(([id, {a, t}], i) => {
+    let ok = false;
+    if (t === 'f') {
+      const el = document.getElementById(id);
+      const ua = el ? el.value.trim().toLowerCase() : '';
+      ok = a.some(x => ua === x || ua.replace(/\s+/g,'') === x.replace(/\s+/g,''));
+    } else {
+      ok = (mcqAns[id] || '') === a;
+    }
+    if (ok) s++;
+    d += `<span style="font-size:12px">${ok ? '<span class="ck">✓</span>' : '<span class="xk">✗</span>'} Q${i+1}: ${ok ? 'Correct' : 'Incorrect'}</span><br>`;
+  });
+  scores.listening = s;
+  document.getElementById('listen-score').textContent = s + '/30';
+  document.getElementById('listen-detail').innerHTML = d;
+  document.getElementById('listen-result').classList.add('show');
+  document.getElementById('tab-listening').classList.add('done');
+}
+
+function checkReading() {
+  let s = 0, d = '';
+  const ids = ['rq1','rq2','rq3','rq4','rq5','rq6','rq7','rq8','rq9','rq10','rq11','rq12','rq13'];
+  ids.forEach((id, i) => {
+    const exp = RK[id]; let ok = false;
+    if (i < 6)      { ok = (tfngAns[id] || '') === exp; }
+    else if (i < 9) { const el = document.getElementById(id); ok = el && el.value === exp; }
+    else            { const el = document.getElementById(id); const ua = el ? el.value.trim().toLowerCase() : ''; ok = (Array.isArray(exp) ? exp : [exp]).some(x => ua === x); }
+    if (ok) s++;
+    d += `<span style="font-size:12px">${ok ? '<span class="ck">✓</span>' : '<span class="xk">✗</span>'} Q${i+1}: ${ok ? 'Correct' : 'Incorrect'}</span><br>`;
+  });
+  scores.reading = s;
+  document.getElementById('read-score').textContent = s + '/13';
+  document.getElementById('read-detail').innerHTML = d;
+  document.getElementById('read-result').classList.add('show');
+  document.getElementById('tab-reading').classList.add('done');
+}
+
+/* ═══════════════════════════════════════════════════════════
+   WRITING
+═══════════════════════════════════════════════════════════ */
+function updateWC(tId, cId) {
+  const txt = document.getElementById(tId).value.trim();
+  const n = txt === '' ? 0 : txt.split(/\s+/).length;
+  document.getElementById(cId).textContent = n;
+  const min = tId === 'task1' ? 150 : 250;
+  document.getElementById(cId).parentElement.style.color = n >= min ? 'var(--green)' : 'var(--gray-400)';
+  if (tId === 'task1') scores.w1 = n; else scores.w2 = n;
+}
+
+function submitAll() {
+  if (scores.listening === null) checkListening();
+  if (scores.reading === null) checkReading();
+  const t1 = document.getElementById('task1').value.trim();
+  const t2 = document.getElementById('task2').value.trim();
+  scores.w1 = t1 === '' ? 0 : t1.split(/\s+/).length;
+  scores.w2 = t2 === '' ? 0 : t2.split(/\s+/).length;
+  document.getElementById('tab-writing').classList.add('done');
+  showSection('results');
+}
+
+/* ═══════════════════════════════════════════════════════════
+   BAND CONVERSION + RESULTS
+═══════════════════════════════════════════════════════════ */
+function lBand(r) { if(r>=28)return 9;if(r>=26)return 8.5;if(r>=23)return 8;if(r>=20)return 7.5;if(r>=17)return 7;if(r>=14)return 6.5;if(r>=11)return 6;if(r>=8)return 5.5;if(r>=6)return 5;if(r>=4)return 4.5;return 4; }
+function rBand(r) { if(r>=13)return 9;if(r>=12)return 8.5;if(r>=11)return 8;if(r>=10)return 7.5;if(r>=9)return 7;if(r>=8)return 6.5;if(r>=7)return 6;if(r>=6)return 5.5;if(r>=5)return 5;if(r>=4)return 4.5;return 4; }
+function wBand(w1,w2) { if(w1>=250&&w2>=400)return 7;if(w1>=200&&w2>=320)return 6.5;if(w1>=150&&w2>=250)return 6;if(w1>=120&&w2>=200)return 5.5;if(w1>0||w2>0)return 5;return null; }
+function rnd(b) { return Math.round(b * 2) / 2; }
+function bdesc(b) {
+  if(b>=8.5)return 'Expert user — near-native command of English.';
+  if(b>=7.5)return 'Very good user — handles complex language well.';
+  if(b>=6.5)return 'Competent user — effective in most situations.';
+  if(b>=5.5)return 'Modest user — partial command in familiar situations.';
+  return 'Limited user — basic competence in familiar situations only.';
+}
+
+function renderResults() {
+  const lb = scores.listening !== null ? lBand(scores.listening) : null;
+  const rb = scores.reading   !== null ? rBand(scores.reading)   : null;
+  const wb = wBand(scores.w1, scores.w2);
+
+  function set(id, v) { const e=document.getElementById(id); if(e) e.textContent=v; }
+  function bar(id, pct) { const e=document.getElementById(id); if(e) e.style.width=Math.round(pct)+'%'; }
+
+  if (lb !== null) {
+    set('res-l-band', lb); set('res-l-raw', scores.listening+'/30 correct');
+    bar('res-l-bar', (lb/9)*100); bar('bar-l', (lb/9)*100); set('score-l', 'Band '+lb);
+  }
+  if (rb !== null) {
+    set('res-r-band', rb); set('res-r-raw', scores.reading+'/13 correct');
+    bar('res-r-bar', (rb/9)*100); bar('bar-r', (rb/9)*100); set('score-r', 'Band '+rb);
+  }
+  if (wb !== null) {
+    set('res-w-band', wb+'*'); set('res-w-raw', 'Word count estimate — use AI feedback for full band');
+    bar('res-w-bar', (wb/9)*100); bar('bar-w1', (wb/9)*100); bar('bar-w2', (wb/9)*100);
+    set('score-w1', '~'+wb); set('score-w2', '~'+wb);
+  }
+
+  const avail = [lb, rb, wb].filter(x => x !== null);
+  if (avail.length > 0) {
+    const avg = rnd(avail.reduce((a,b) => a+b, 0) / avail.length);
+    set('overall-band', avg);
+    set('overall-desc', bdesc(avg) + (wb ? '  (*Writing estimated from word count only.)' : ''));
+  }
+
+  // Tags
+  const tags = [];
+  if (lb !== null) {
+    if (lb >= 7)   tags.push({t:'Strong Listening',c:'tag-good'});
+    else if (lb >= 5.5) tags.push({t:'Developing Listening',c:'tag-ok'});
+    else           tags.push({t:'Needs Listening work',c:'tag-weak'});
+  }
+  if (rb !== null) {
+    if (rb >= 7)   tags.push({t:'Strong Reading',c:'tag-good'});
+    else if (rb >= 5.5) tags.push({t:'Developing Reading',c:'tag-ok'});
+    else           tags.push({t:'Needs Reading work',c:'tag-weak'});
+  }
+  if (scores.w1 >= 150) tags.push({t:'Task 1 length ✓',c:'tag-good'});
+  else if (scores.w1 > 0) tags.push({t:'Task 1 too short',c:'tag-weak'});
+  if (scores.w2 >= 250) tags.push({t:'Task 2 length ✓',c:'tag-good'});
+  else if (scores.w2 > 0) tags.push({t:'Task 2 too short',c:'tag-weak'});
+  document.getElementById('perf-tags').innerHTML = tags.length
+    ? tags.map(t=>`<span class="tag ${t.c}">${t.t}</span>`).join('')
+    : '<span style="font-size:13px;color:var(--gray-400)">No data yet — complete the test first.</span>';
+
+  // Recommendations
+  const tips = [];
+  if (lb !== null && lb < 6.5) tips.push('Practise listening to a range of English accents daily — BBC Learning English and IELTS Listening podcasts are excellent resources.');
+  if (lb !== null && lb >= 6.5) tips.push('Maintain listening strength by focusing on Section 3 and 4 academic vocabulary and following complex arguments.');
+  if (rb !== null && rb < 6.5) tips.push('Build reading speed by skimming for topic sentences before attempting T/F/NG questions. Avoid reading every word in the passage first.');
+  if (rb !== null && rb >= 6.5) tips.push("Push your reading band higher by practising matching headings tasks and identifying the writer's attitude or purpose.");
+  if (scores.w1 < 150) tips.push('Task 1: Aim for 160–180 words. Practise data description phrases: "rose sharply," "remained stable," "saw a significant increase."');
+  if (scores.w2 < 250) tips.push('Task 2: Aim for 270–300 words across 4–5 paragraphs. Start with a clear thesis statement that names both sides of the argument.');
+  if (scores.w1 >= 150 && scores.w2 >= 250) tips.push('Both writing tasks meet the minimum length. Use the AI feedback button for a full criterion-by-criterion band breakdown (Task Achievement, Coherence, Vocabulary, Grammar).');
+  if (!tips.length) tips.push('Complete all sections to receive personalised recommendations.');
+  document.getElementById('reco-items').innerHTML = tips.map(t=>`<div class="reco-item">${t}</div>`).join('');
+}
+
+/* ═══════════════════════════════════════════════════════════
+   AI WRITING FEEDBACK
+═══════════════════════════════════════════════════════════ */
+function getAIFeedback() {
+  const t1 = document.getElementById('task1').value.trim();
+  const t2 = document.getElementById('task2').value.trim();
+  if (!t1 && !t2) { alert('Please write at least one response before requesting feedback.'); return; }
+  const prompt = `Please give me detailed IELTS Academic Writing feedback on my responses below.\n\nTASK 1 (${scores.w1} words):\n${t1 || '(not attempted)'}\n\nTASK 2 (${scores.w2} words):\n${t2 || '(not attempted)'}\n\nFor each task, please:\n1. Assess all four IELTS criteria: Task Achievement, Coherence & Cohesion, Lexical Resource, Grammatical Range & Accuracy.\n2. Give a band score estimate for each criterion.\n3. Give an overall band score estimate per task.\n4. List 2–3 specific improvements the student could make.`;
+  if (typeof sendPrompt === 'function') {
+    sendPrompt(prompt);
+  } else {
+    // Fallback: copy to clipboard
+    navigator.clipboard.writeText(prompt).then(() => alert('Feedback request copied to clipboard! Paste it into Claude to get your assessment.')).catch(() => alert('Open Claude and paste this prompt:\n\n' + prompt.substring(0, 200) + '…'));
+  }
+}
+</script>
+</body>
+</html>
