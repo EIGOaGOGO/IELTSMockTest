@@ -175,6 +175,43 @@ body{font-family:var(--sans);background:#fff;color:var(--gray-800);min-height:10
 .reco-panel h3{font-size:14px;font-weight:600;color:var(--navy);margin-bottom:12px}
 .reco-item{font-size:13px;padding:5px 0 5px 16px;position:relative;line-height:1.65;color:var(--gray-800)}
 .reco-item::before{content:'•';position:absolute;left:4px;color:var(--navy)}
+
+/* REVIEW PANEL */
+.review-panel{border:1.5px solid var(--navy);border-radius:var(--radius-lg);margin-top:16px;overflow:hidden}
+.review-tabs{display:flex;background:var(--navy)}
+.rtab{flex:1;padding:10px 8px;font-size:12px;font-weight:600;color:rgba(255,255,255,.6);background:none;border:none;cursor:pointer;font-family:var(--sans);border-bottom:3px solid transparent;transition:all .15s}
+.rtab.active{color:#fff;border-color:#fff;background:rgba(255,255,255,.08)}
+.rtab:hover:not(.active){color:rgba(255,255,255,.9)}
+.rtab-content{padding:20px}
+.check-legend{font-size:12px;color:var(--gray-600);margin-bottom:14px;padding:8px 12px;background:var(--gray-50);border-radius:6px}
+.sp-mark{border-bottom:2.5px solid #dc2626;font-family:var(--serif)}
+.gr-mark{background:#fef9c3;border-radius:3px;padding:1px 3px;font-family:var(--serif)}
+.checked-text{font-family:var(--serif);font-size:14px;line-height:2;white-space:pre-wrap;word-break:break-word;background:var(--gray-50);padding:14px 16px;border-radius:var(--radius);border:1px solid var(--gray-200);min-height:80px;margin-bottom:14px}
+.spell-err{border-bottom:2.5px solid #dc2626;cursor:help;position:relative}
+.gram-err{background:#fef9c3;border-radius:3px;padding:1px 2px;cursor:help}
+.check-notes{display:flex;flex-direction:column;gap:8px}
+.note-item{font-size:13px;padding:10px 12px;border-radius:var(--radius);display:flex;gap:10px;align-items:flex-start}
+.note-spell{background:#fef2f2;border:1px solid #fecaca}
+.note-gram{background:#fefce8;border:1px solid #fef08a}
+.note-item .note-icon{font-size:14px;flex-shrink:0;margin-top:1px}
+.note-item .note-body{font-size:13px;line-height:1.5}
+.note-item .note-word{font-weight:600;font-family:var(--serif)}
+.note-item .note-sugg{color:var(--green);font-weight:600}
+.no-errors{font-size:13px;color:var(--green);background:var(--green-light);border:1px solid #6ee7b7;border-radius:var(--radius);padding:10px 14px}
+.ideal-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--gray-400);margin-bottom:10px}
+.ideal-text{font-family:var(--serif);font-size:14px;line-height:1.9;color:var(--gray-800);background:var(--gray-50);padding:16px;border-radius:var(--radius);border:1px solid var(--gray-200)}
+.self-score-intro{font-size:13px;color:var(--gray-600);margin-bottom:16px}
+.rubric-grid{display:flex;flex-direction:column;gap:0;border:1px solid var(--gray-200);border-radius:var(--radius);overflow:hidden;margin-bottom:16px}
+.rubric-row{display:grid;grid-template-columns:1fr auto auto;gap:12px;align-items:center;padding:14px 16px;border-bottom:1px solid var(--gray-200);background:#fff}
+.rubric-row:last-child{border-bottom:none}
+.rubric-crit{font-size:13px;font-weight:600;color:var(--gray-800)}
+.rubric-desc{font-size:12px;font-weight:400;color:var(--gray-400);margin-top:3px;line-height:1.4}
+.rubric-stars{display:flex;gap:3px}
+.rubric-stars span{font-size:20px;cursor:pointer;color:#e2e8f0;transition:color .1s;user-select:none;line-height:1}
+.rubric-stars span.lit{color:#f59e0b}
+.rubric-band{font-size:13px;font-weight:700;color:var(--navy);min-width:40px;text-align:right}
+.self-total{font-size:15px;text-align:center;padding:14px;background:var(--blue-light);border-radius:var(--radius);color:var(--navy)}
+.self-total strong{font-size:22px}
 </style>
 </head>
 <body>
@@ -483,28 +520,128 @@ body{font-family:var(--sans);background:#fff;color:var(--gray-800);min-height:10
 
 <!-- ══════════════════════════════════════ WRITING ══════════════════════════════════════ -->
 <div id="writing" class="section">
-<div class="sec-header"><h2>IELTS Academic Writing</h2><p>Task 1 ≈ 20 minutes (150+ words). Task 2 ≈ 40 minutes (250+ words).</p></div>
+<div class="sec-header"><h2>IELTS Academic Writing</h2><p>Task 1 ≈ 20 minutes (150+ words). Task 2 ≈ 40 minutes (250+ words). Use the Review panel after writing to check your work.</p></div>
 
-<div style="margin-bottom:32px">
+<!-- TASK 1 -->
+<div style="margin-bottom:36px">
   <div class="task-band"><span class="task-badge">TASK 1</span><span style="font-size:13px;color:var(--gray-600)">Minimum 150 words</span></div>
   <div class="task-prompt">
     <strong>The bar chart below shows the percentage of people in four countries who used the internet for shopping in 2010 and 2020.</strong><br><br>
     Summarise the information by selecting and reporting the main features, and make comparisons where relevant.<br><br>
-    <div style="background:#fff;border:1px solid var(--gray-200);border-radius:6px;padding:14px;font-size:13px;font-family:var(--sans)">
-      <strong style="font-size:12px;color:var(--gray-600);display:block;margin-bottom:10px">INTERNET SHOPPING USAGE (% of population)</strong>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;font-size:12px">
-        <div><strong>UK:</strong> 2010 — 42% &nbsp;|&nbsp; 2020 — 79%</div>
-        <div><strong>Germany:</strong> 2010 — 38% &nbsp;|&nbsp; 2020 — 71%</div>
-        <div><strong>Brazil:</strong> 2010 — 18% &nbsp;|&nbsp; 2020 — 55%</div>
-        <div><strong>India:</strong> 2010 — 7% &nbsp;|&nbsp; 2020 — 38%</div>
-      </div>
+    <div style="background:#fff;border:1px solid var(--gray-200);border-radius:6px;padding:16px;">
+      <strong style="font-size:12px;color:var(--gray-600);display:block;margin-bottom:4px;font-family:var(--sans);text-transform:uppercase;letter-spacing:.05em">Figure 1: Internet Shopping Usage (% of population), 2010 and 2020</strong>
+      <svg viewBox="0 0 560 240" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:560px;display:block;font-family:'DM Sans',sans-serif">
+        <!-- Y-axis gridlines and labels -->
+        <line x1="60" y1="20" x2="60" y2="185" stroke="#e2e8f0" stroke-width="1"/>
+        <line x1="60" y1="185" x2="540" y2="185" stroke="#94a3b8" stroke-width="1.5"/>
+        <!-- Gridlines at 20,40,60,80% -->
+        <line x1="60" y1="149" x2="540" y2="149" stroke="#e2e8f0" stroke-width="1" stroke-dasharray="3,3"/>
+        <line x1="60" y1="113" x2="540" y2="113" stroke="#e2e8f0" stroke-width="1" stroke-dasharray="3,3"/>
+        <line x1="60" y1="77"  x2="540" y2="77"  stroke="#e2e8f0" stroke-width="1" stroke-dasharray="3,3"/>
+        <line x1="60" y1="41"  x2="540" y2="41"  stroke="#e2e8f0" stroke-width="1" stroke-dasharray="3,3"/>
+        <!-- Y-axis labels -->
+        <text x="52" y="188" text-anchor="end" font-size="10" fill="#94a3b8">0%</text>
+        <text x="52" y="152" text-anchor="end" font-size="10" fill="#94a3b8">20%</text>
+        <text x="52" y="116" text-anchor="end" font-size="10" fill="#94a3b8">40%</text>
+        <text x="52" y="80"  text-anchor="end" font-size="10" fill="#94a3b8">60%</text>
+        <text x="52" y="44"  text-anchor="end" font-size="10" fill="#94a3b8">80%</text>
+        <!-- 
+          Bar layout: 4 countries, 2 bars each. Group width=110px, bar width=38px, gap=8px between bars, 16px between groups.
+          Groups start at x=68,178,288,398. Scale: 165px = 100%, so 1% = 1.65px. Bottom = y185.
+          UK:      2010=42% → h=69.3 → y=115.7   2020=79% → h=130.4 → y=54.6
+          Germany: 2010=38% → h=62.7 → y=122.3   2020=71% → h=117.2 → y=67.8
+          Brazil:  2010=18% → h=29.7 → y=155.3   2020=55% → h=90.75 → y=94.25
+          India:   2010=7%  → h=11.6 → y=173.4   2020=38% → h=62.7  → y=122.3
+        -->
+        <!-- UK -->
+        <rect x="72"  y="115" width="38" height="70"  fill="#1a2744" rx="2"/>
+        <rect x="116" y="55"  width="38" height="130" fill="#3b82f6" rx="2"/>
+        <text x="91"  y="111" text-anchor="middle" font-size="9" fill="#1a2744" font-weight="600">42%</text>
+        <text x="135" y="51"  text-anchor="middle" font-size="9" fill="#2563eb" font-weight="600">79%</text>
+        <text x="113" y="204" text-anchor="middle" font-size="11" fill="#475569" font-weight="600">UK</text>
+        <!-- Germany -->
+        <rect x="182" y="122" width="38" height="63"  fill="#1a2744" rx="2"/>
+        <rect x="226" y="68"  width="38" height="117" fill="#3b82f6" rx="2"/>
+        <text x="201" y="118" text-anchor="middle" font-size="9" fill="#1a2744" font-weight="600">38%</text>
+        <text x="245" y="64"  text-anchor="middle" font-size="9" fill="#2563eb" font-weight="600">71%</text>
+        <text x="223" y="204" text-anchor="middle" font-size="11" fill="#475569" font-weight="600">Germany</text>
+        <!-- Brazil -->
+        <rect x="292" y="155" width="38" height="30"  fill="#1a2744" rx="2"/>
+        <rect x="336" y="94"  width="38" height="91"  fill="#3b82f6" rx="2"/>
+        <text x="311" y="151" text-anchor="middle" font-size="9" fill="#1a2744" font-weight="600">18%</text>
+        <text x="355" y="90"  text-anchor="middle" font-size="9" fill="#2563eb" font-weight="600">55%</text>
+        <text x="333" y="204" text-anchor="middle" font-size="11" fill="#475569" font-weight="600">Brazil</text>
+        <!-- India -->
+        <rect x="402" y="173" width="38" height="12"  fill="#1a2744" rx="2"/>
+        <rect x="446" y="122" width="38" height="63"  fill="#3b82f6" rx="2"/>
+        <text x="421" y="169" text-anchor="middle" font-size="9" fill="#1a2744" font-weight="600">7%</text>
+        <text x="465" y="118" text-anchor="middle" font-size="9" fill="#2563eb" font-weight="600">38%</text>
+        <text x="443" y="204" text-anchor="middle" font-size="11" fill="#475569" font-weight="600">India</text>
+        <!-- Legend -->
+        <rect x="62"  y="220" width="12" height="12" fill="#1a2744" rx="2"/>
+        <text x="78"  y="230" font-size="11" fill="#475569">2010</text>
+        <rect x="120" y="220" width="12" height="12" fill="#3b82f6" rx="2"/>
+        <text x="136" y="230" font-size="11" fill="#475569">2020</text>
+      </svg>
     </div>
   </div>
   <div class="writing-tips"><strong>Task 1 tips:</strong> Describe overall trends first. Compare countries. Use specific figures. Do NOT give opinions — just report what you see.</div>
   <textarea class="writing-area" id="task1" oninput="updateWC('task1','wc1')" placeholder="Write your Task 1 answer here…"></textarea>
   <div class="word-count">Word count: <span id="wc1">0</span> / 150 minimum</div>
+  <div style="margin-top:10px">
+    <button class="btn-sec" onclick="reviewTask(1)">🔍 Review Task 1</button>
+  </div>
+
+  <!-- TASK 1 REVIEW PANEL -->
+  <div class="review-panel" id="review1" style="display:none">
+    <div class="review-tabs">
+      <button class="rtab active" onclick="showRTab(1,'check')">✏️ Spell &amp; Grammar</button>
+      <button class="rtab" onclick="showRTab(1,'ideal')">📄 Ideal Answer</button>
+      <button class="rtab" onclick="showRTab(1,'score')">⭐ Self-Score</button>
+    </div>
+    <div class="rtab-content" id="r1-check">
+      <div class="check-legend"><span class="sp-mark">underline</span> = possible spelling &nbsp;|&nbsp; <span class="gr-mark">highlight</span> = grammar note</div>
+      <div class="checked-text" id="r1-checked"></div>
+      <div class="check-notes" id="r1-notes"></div>
+    </div>
+    <div class="rtab-content" id="r1-ideal" style="display:none">
+      <div class="ideal-label">Band 7 Model Answer — Task 1</div>
+      <div class="ideal-text">The bar chart illustrates the proportion of the population in four countries — the UK, Germany, Brazil, and India — who shopped online in 2010 and 2020.<br><br>
+      Overall, internet shopping increased in all four countries over the decade, with the UK and Germany consistently showing the highest usage, while India recorded the lowest figures throughout the period.<br><br>
+      In 2010, the UK led with 42% of its population shopping online, slightly ahead of Germany at 38%. By 2020, both countries had risen considerably, reaching 79% and 71% respectively. These remained the highest figures across both years.<br><br>
+      Brazil and India showed more modest starting points. Brazil rose from 18% in 2010 to 55% in 2020 — a notable increase of 37 percentage points. India, while starting from the lowest base of just 7%, more than quintupled its figure to reach 38% by 2020, representing the greatest proportional growth of all four countries.<br><br>
+      In conclusion, while wealthier nations showed higher absolute figures, the developing economies demonstrated the steepest rates of growth in online shopping over this period.</div>
+    </div>
+    <div class="rtab-content" id="r1-score" style="display:none">
+      <div class="self-score-intro">Rate your Task 1 response on each IELTS criterion. Be honest — this helps you identify where to improve.</div>
+      <div class="rubric-grid">
+        <div class="rubric-row">
+          <div class="rubric-crit">Task Achievement<div class="rubric-desc">Did you describe all key features? Did you make comparisons? Did you write 150+ words?</div></div>
+          <div class="rubric-stars" id="s1-ta"><span onclick="setScore('s1-ta',1)">★</span><span onclick="setScore('s1-ta',2)">★</span><span onclick="setScore('s1-ta',3)">★</span><span onclick="setScore('s1-ta',4)">★</span><span onclick="setScore('s1-ta',5)">★</span></div>
+          <div class="rubric-band" id="sb1-ta">—</div>
+        </div>
+        <div class="rubric-row">
+          <div class="rubric-crit">Coherence &amp; Cohesion<div class="rubric-desc">Is your answer well organised? Did you use linking words (however, while, by contrast)?</div></div>
+          <div class="rubric-stars" id="s1-cc"><span onclick="setScore('s1-cc',1)">★</span><span onclick="setScore('s1-cc',2)">★</span><span onclick="setScore('s1-cc',3)">★</span><span onclick="setScore('s1-cc',4)">★</span><span onclick="setScore('s1-cc',5)">★</span></div>
+          <div class="rubric-band" id="sb1-cc">—</div>
+        </div>
+        <div class="rubric-row">
+          <div class="rubric-crit">Lexical Resource<div class="rubric-desc">Did you use a range of vocabulary? Did you avoid repeating the same words?</div></div>
+          <div class="rubric-stars" id="s1-lr"><span onclick="setScore('s1-lr',1)">★</span><span onclick="setScore('s1-lr',2)">★</span><span onclick="setScore('s1-lr',3)">★</span><span onclick="setScore('s1-lr',4)">★</span><span onclick="setScore('s1-lr',5)">★</span></div>
+          <div class="rubric-band" id="sb1-lr">—</div>
+        </div>
+        <div class="rubric-row">
+          <div class="rubric-crit">Grammar<div class="rubric-desc">Did you use a mix of sentence structures? Were there many errors?</div></div>
+          <div class="rubric-stars" id="s1-gr"><span onclick="setScore('s1-gr',1)">★</span><span onclick="setScore('s1-gr',2)">★</span><span onclick="setScore('s1-gr',3)">★</span><span onclick="setScore('s1-gr',4)">★</span><span onclick="setScore('s1-gr',5)">★</span></div>
+          <div class="rubric-band" id="sb1-gr">—</div>
+        </div>
+      </div>
+      <div class="self-total">Estimated Task 1 Band: <strong id="t1-total">—</strong></div>
+    </div>
+  </div>
 </div>
 
+<!-- TASK 2 -->
 <div>
   <div class="task-band"><span class="task-badge">TASK 2</span><span style="font-size:13px;color:var(--gray-600)">Minimum 250 words — worth double marks</span></div>
   <div class="task-prompt">
@@ -516,10 +653,60 @@ body{font-family:var(--sans);background:#fff;color:var(--gray-800);min-height:10
   <div class="writing-tips"><strong>Task 2 tips:</strong> Structure: Introduction → Body 1 (one view) → Body 2 (other view) → Your opinion → Conclusion. Use topic sentences, linking words, and specific examples.</div>
   <textarea class="writing-area" style="min-height:300px" id="task2" oninput="updateWC('task2','wc2')" placeholder="Write your Task 2 essay here…"></textarea>
   <div class="word-count">Word count: <span id="wc2">0</span> / 250 minimum</div>
+  <div style="margin-top:10px">
+    <button class="btn-sec" onclick="reviewTask(2)">🔍 Review Task 2</button>
+  </div>
+
+  <!-- TASK 2 REVIEW PANEL -->
+  <div class="review-panel" id="review2" style="display:none">
+    <div class="review-tabs">
+      <button class="rtab active" onclick="showRTab(2,'check')">✏️ Spell &amp; Grammar</button>
+      <button class="rtab" onclick="showRTab(2,'ideal')">📄 Ideal Answer</button>
+      <button class="rtab" onclick="showRTab(2,'score')">⭐ Self-Score</button>
+    </div>
+    <div class="rtab-content" id="r2-check">
+      <div class="check-legend"><span class="sp-mark">underline</span> = possible spelling &nbsp;|&nbsp; <span class="gr-mark">highlight</span> = grammar note</div>
+      <div class="checked-text" id="r2-checked"></div>
+      <div class="check-notes" id="r2-notes"></div>
+    </div>
+    <div class="rtab-content" id="r2-ideal" style="display:none">
+      <div class="ideal-label">Band 7 Model Answer — Task 2</div>
+      <div class="ideal-text">The rapid advancement of technology over the past few decades has fundamentally changed the way people live and work. While some argue that this has introduced unnecessary complexity into daily life, others maintain that technology has made life significantly easier. This essay will discuss both perspectives before presenting my own view.<br><br>
+      Those who believe technology complicates life often point to the overwhelming pace of change. People are now expected to manage multiple devices, applications, and digital accounts simultaneously, which can feel burdensome. For example, the rise of remote working tools such as video conferencing platforms and cloud-based software means that employees are rarely truly "off-duty," blurring the boundary between work and personal time. Furthermore, constant software updates and cybersecurity threats add additional layers of stress that previous generations did not experience.<br><br>
+      On the other hand, there is compelling evidence that technology simplifies everyday tasks enormously. Online banking, instant messaging, and navigation apps have all reduced the time and effort required for routine activities. Medical technology, in particular, has transformed healthcare, enabling faster diagnoses and more effective treatments that save countless lives. For students, digital libraries and translation tools provide access to information that would previously have required hours in a physical library.<br><br>
+      In my opinion, while technology does introduce some complexity, its overall impact is overwhelmingly positive. The challenges it creates are largely manageable with appropriate digital literacy education, whereas the benefits — improved communication, efficiency, and access to information — are profound and far-reaching.<br><br>
+      In conclusion, technology has undoubtedly changed the nature of daily life, but with the right skills and awareness, it serves as a powerful tool for simplification rather than complication.</div>
+    </div>
+    <div class="rtab-content" id="r2-score" style="display:none">
+      <div class="self-score-intro">Rate your Task 2 essay on each IELTS criterion.</div>
+      <div class="rubric-grid">
+        <div class="rubric-row">
+          <div class="rubric-crit">Task Response<div class="rubric-desc">Did you address both views AND give your own opinion? Is it 250+ words?</div></div>
+          <div class="rubric-stars" id="s2-ta"><span onclick="setScore('s2-ta',1)">★</span><span onclick="setScore('s2-ta',2)">★</span><span onclick="setScore('s2-ta',3)">★</span><span onclick="setScore('s2-ta',4)">★</span><span onclick="setScore('s2-ta',5)">★</span></div>
+          <div class="rubric-band" id="sb2-ta">—</div>
+        </div>
+        <div class="rubric-row">
+          <div class="rubric-crit">Coherence &amp; Cohesion<div class="rubric-desc">Clear paragraphs? Topic sentences? Linking words used naturally?</div></div>
+          <div class="rubric-stars" id="s2-cc"><span onclick="setScore('s2-cc',1)">★</span><span onclick="setScore('s2-cc',2)">★</span><span onclick="setScore('s2-cc',3)">★</span><span onclick="setScore('s2-cc',4)">★</span><span onclick="setScore('s2-cc',5)">★</span></div>
+          <div class="rubric-band" id="sb2-cc">—</div>
+        </div>
+        <div class="rubric-row">
+          <div class="rubric-crit">Lexical Resource<div class="rubric-desc">Varied vocabulary? Academic words? Avoided repetition?</div></div>
+          <div class="rubric-stars" id="s2-lr"><span onclick="setScore('s2-lr',1)">★</span><span onclick="setScore('s2-lr',2)">★</span><span onclick="setScore('s2-lr',3)">★</span><span onclick="setScore('s2-lr',4)">★</span><span onclick="setScore('s2-lr',5)">★</span></div>
+          <div class="rubric-band" id="sb2-lr">—</div>
+        </div>
+        <div class="rubric-row">
+          <div class="rubric-crit">Grammar<div class="rubric-desc">Range of structures? Complex sentences? Few errors?</div></div>
+          <div class="rubric-stars" id="s2-gr"><span onclick="setScore('s2-gr',1)">★</span><span onclick="setScore('s2-gr',2)">★</span><span onclick="setScore('s2-gr',3)">★</span><span onclick="setScore('s2-gr',4)">★</span><span onclick="setScore('s2-gr',5)">★</span></div>
+          <div class="rubric-band" id="sb2-gr">—</div>
+        </div>
+      </div>
+      <div class="self-total">Estimated Task 2 Band: <strong id="t2-total">—</strong></div>
+    </div>
+  </div>
 </div>
 
-<div class="submit-bar">
-  <button class="btn-sec" onclick="getAIFeedback()">Get AI feedback ↗</button>
+<div class="submit-bar" style="margin-top:32px">
   <button class="btn-primary" onclick="submitAll()">Submit &amp; View Results →</button>
 </div>
 </div><!-- /writing -->
@@ -888,9 +1075,9 @@ function submitAll() {
 /* ═══════════════════════════════════════════════════════════
    BAND CONVERSION + RESULTS
 ═══════════════════════════════════════════════════════════ */
-function lBand(r) { if(r>=28)return 9;if(r>=26)return 8.5;if(r>=23)return 8;if(r>=20)return 7.5;if(r>=17)return 7;if(r>=14)return 6.5;if(r>=11)return 6;if(r>=8)return 5.5;if(r>=6)return 5;if(r>=4)return 4.5;return 4; }
-function rBand(r) { if(r>=13)return 9;if(r>=12)return 8.5;if(r>=11)return 8;if(r>=10)return 7.5;if(r>=9)return 7;if(r>=8)return 6.5;if(r>=7)return 6;if(r>=6)return 5.5;if(r>=5)return 5;if(r>=4)return 4.5;return 4; }
-function wBand(w1,w2) { if(w1>=250&&w2>=400)return 7;if(w1>=200&&w2>=320)return 6.5;if(w1>=150&&w2>=250)return 6;if(w1>=120&&w2>=200)return 5.5;if(w1>0||w2>0)return 5;return null; }
+function lBand(r) { if(r<=0)return null;if(r>=28)return 9;if(r>=26)return 8.5;if(r>=23)return 8;if(r>=20)return 7.5;if(r>=17)return 7;if(r>=14)return 6.5;if(r>=11)return 6;if(r>=8)return 5.5;if(r>=6)return 5;if(r>=4)return 4.5;return 4; }
+function rBand(r) { if(r<=0)return null;if(r>=13)return 9;if(r>=12)return 8.5;if(r>=11)return 8;if(r>=10)return 7.5;if(r>=9)return 7;if(r>=8)return 6.5;if(r>=7)return 6;if(r>=6)return 5.5;if(r>=5)return 5;if(r>=4)return 4.5;return 4; }
+function wBand(w1,w2) { if(w1<=0&&w2<=0)return null;if(w1>=250&&w2>=400)return 7;if(w1>=200&&w2>=320)return 6.5;if(w1>=150&&w2>=250)return 6;if(w1>=120&&w2>=200)return 5.5;if(w1>0||w2>0)return 5;return null; }
 function rnd(b) { return Math.round(b * 2) / 2; }
 function bdesc(b) {
   if(b>=8.5)return 'Expert user — near-native command of English.';
@@ -963,19 +1150,198 @@ function renderResults() {
 }
 
 /* ═══════════════════════════════════════════════════════════
-   AI WRITING FEEDBACK
+   WRITING REVIEW ENGINE
+   Three tabs per task:
+   1. Spell & Grammar — client-side checks using word list + pattern rules
+   2. Ideal Answer — model Band 7 text for comparison
+   3. Self-Score — star rubric → band estimate
 ═══════════════════════════════════════════════════════════ */
-function getAIFeedback() {
-  const t1 = document.getElementById('task1').value.trim();
-  const t2 = document.getElementById('task2').value.trim();
-  if (!t1 && !t2) { alert('Please write at least one response before requesting feedback.'); return; }
-  const prompt = `Please give me detailed IELTS Academic Writing feedback on my responses below.\n\nTASK 1 (${scores.w1} words):\n${t1 || '(not attempted)'}\n\nTASK 2 (${scores.w2} words):\n${t2 || '(not attempted)'}\n\nFor each task, please:\n1. Assess all four IELTS criteria: Task Achievement, Coherence & Cohesion, Lexical Resource, Grammatical Range & Accuracy.\n2. Give a band score estimate for each criterion.\n3. Give an overall band score estimate per task.\n4. List 2–3 specific improvements the student could make.`;
-  if (typeof sendPrompt === 'function') {
-    sendPrompt(prompt);
-  } else {
-    // Fallback: copy to clipboard
-    navigator.clipboard.writeText(prompt).then(() => alert('Feedback request copied to clipboard! Paste it into Claude to get your assessment.')).catch(() => alert('Open Claude and paste this prompt:\n\n' + prompt.substring(0, 200) + '…'));
+
+// ── Common misspellings dictionary ──
+const SPELL_MAP = {
+  'alot':'a lot','alright':'all right','recieve':'receive','beleive':'believe',
+  'seperate':'separate','occured':'occurred','occurance':'occurrence',
+  'begining':'beginning','definately':'definitely','goverment':'government',
+  'enviroment':'environment','responsability':'responsibility',
+  'accomodate':'accommodate','acheive':'achieve','arguement':'argument',
+  'calender':'calendar','concious':'conscious','convinience':'convenience',
+  'critisism':'criticism','disapear':'disappear','existance':'existence',
+  'foriegn':'foreign','grammer':'grammar','hieght':'height',
+  'imediate':'immediate','independant':'independent','maintainance':'maintenance',
+  'mispell':'misspell','misspeled':'misspelled','neccessary':'necessary',
+  'noticable':'noticeable','occassion':'occasion','paralel':'parallel',
+  'percieve':'perceive','persistant':'persistent','posession':'possession',
+  'privelige':'privilege','profesional':'professional','prominant':'prominent',
+  'pronounciation':'pronunciation','relavant':'relevant','rythm':'rhythm',
+  'sacrafice':'sacrifice','similer':'similar','sieze':'seize',
+  'sucessful':'successful','suprise':'surprise','tecnology':'technology',
+  'tempurature':'temperature','tommorrow':'tomorrow','tounge':'tongue',
+  'truely':'truly','untill':'until','usualy':'usually','vaccuum':'vacuum',
+  'wierd':'weird','writting':'writing','writeing':'writing',
+  'compicated':'complicated','simplifed':'simplified','tecnological':'technological',
+  'improvment':'improvement','developement':'development','significently':'significantly',
+  'signifcant':'significant','increaseing':'increasing','decresed':'decreased',
+  'percentege':'percentage','populacion':'population','countires':'countries',
+  'comparision':'comparison','ilustrates':'illustrates','proporcion':'proportion',
+  'repectively':'respectively','substancially':'substantially','consideribly':'considerably'
+};
+
+// ── Grammar pattern rules ──
+// Each rule: { pattern (regex on full text), message, type:'gram' }
+const GRAM_RULES = [
+  { re:/\b(a)\s+([aeiou])/gi,        msg:'Use "an" before vowel sounds (e.g. "an increase", "an example").', ex: m => `"${m[0]}"` },
+  { re:/\b(an)\s+([bcdfghjklmnpqrstvwxyz])/gi, msg:'Use "a" before consonant sounds (e.g. "a bar chart", "a country").', ex: m => `"${m[0]}"` },
+  { re:/\bthey is\b/gi,              msg:'"They" takes "are", not "is". → "they are"', ex: ()=>''},
+  { re:/\bhe are\b|\bshe are\b/gi,   msg:'"He/she" takes "is", not "are".', ex: ()=>''},
+  { re:/\bmore ([\w]+)er\b/gi,       msg:'Avoid double comparative: use either "more [adj]" OR "[adj]er", not both.', ex: m=>`"${m[0]}"`},
+  { re:/\bmost ([\w]+)est\b/gi,      msg:'Avoid double superlative: use either "most [adj]" OR "[adj]est".', ex: m=>`"${m[0]}"`},
+  { re:/\b(i)\b/g,                   msg:'The pronoun "I" must always be capitalised.', ex: ()=>'"i"'},
+  { re:/\bdatas\b/gi,                msg:'"Data" is already plural — write "data", not "datas".', ex: ()=>''},
+  { re:/\binformations\b/gi,         msg:'"Information" is uncountable — no "s".', ex: ()=>''},
+  { re:/\badvices\b/gi,              msg:'"Advice" is uncountable — write "advice", not "advices".', ex: ()=>''},
+  { re:/\bfurthermore,?\s+but\b/gi,  msg:'"Furthermore" and "but" are contradictory connectors — choose one.', ex: ()=>''},
+  { re:/\bin the other hand\b/gi,    msg:'Say "on the other hand", not "in the other hand".', ex: ()=>''},
+  { re:/\bfor example,\s+\w/g,       msg:'After "for example," begin with a capital letter if starting a new sentence.', ex: ()=>'', severity:'low'},
+  { re:/\b(\w+)\s+\1\b/gi,           msg:'Repeated word detected.', ex: m=>`"${m[0]}"` },
+];
+
+function runSpellCheck(text) {
+  const issues = [];
+  // Tokenise preserving position
+  const wordRe = /\b([a-zA-Z']+)\b/g;
+  let m;
+  while ((m = wordRe.exec(text)) !== null) {
+    const raw = m[1];
+    const lower = raw.toLowerCase().replace(/'/g,'');
+    if (SPELL_MAP[lower]) {
+      issues.push({ type:'spell', start: m.index, end: m.index + raw.length,
+        word: raw, suggestion: SPELL_MAP[lower] });
+    }
   }
+  return issues;
+}
+
+function runGramCheck(text) {
+  const issues = [];
+  GRAM_RULES.forEach(rule => {
+    let m;
+    const re = new RegExp(rule.re.source, rule.re.flags);
+    while ((m = re.exec(text)) !== null) {
+      issues.push({ type:'gram', start: m.index, end: m.index + m[0].length,
+        word: m[0], msg: rule.msg });
+    }
+  });
+  return issues;
+}
+
+function buildAnnotatedHTML(text, issues) {
+  // Sort issues by start position; later positions first so splicing doesn't shift indices
+  const sorted = [...issues].sort((a,b) => a.start - b.start);
+  // Build HTML by walking through text
+  let html = '';
+  let pos = 0;
+  for (const iss of sorted) {
+    if (iss.start < pos) continue; // overlapping — skip
+    html += escHtml(text.slice(pos, iss.start));
+    const snippet = escHtml(text.slice(iss.start, iss.end));
+    if (iss.type === 'spell') {
+      html += `<span class="spell-err" title="Possible spelling: ${iss.suggestion}">${snippet}</span>`;
+    } else {
+      html += `<span class="gram-err" title="${iss.msg}">${snippet}</span>`;
+    }
+    pos = iss.end;
+  }
+  html += escHtml(text.slice(pos));
+  return html;
+}
+
+function escHtml(s) {
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+function reviewTask(taskNum) {
+  const panel = document.getElementById('review' + taskNum);
+  const textarea = document.getElementById('task' + taskNum);
+  const text = textarea.value;
+
+  panel.style.display = 'block';
+  panel.scrollIntoView({ behavior:'smooth', block:'nearest' });
+
+  // Run checks
+  const spellIss = runSpellCheck(text);
+  const gramIss  = runGramCheck(text);
+  const allIss   = [...spellIss, ...gramIss];
+
+  // Annotated display
+  const checkedEl = document.getElementById('r' + taskNum + '-checked');
+  checkedEl.innerHTML = text.trim() ? buildAnnotatedHTML(text, allIss) : '<span style="color:var(--gray-400);font-style:italic">Nothing written yet.</span>';
+
+  // Notes list
+  const notesEl = document.getElementById('r' + taskNum + '-notes');
+  if (allIss.length === 0 && text.trim()) {
+    notesEl.innerHTML = '<div class="no-errors">✓ No obvious spelling or grammar issues detected. Well done!</div>';
+  } else {
+    const seen = new Set();
+    const items = allIss.map(iss => {
+      const key = iss.type + iss.word.toLowerCase();
+      if (seen.has(key)) return '';
+      seen.add(key);
+      if (iss.type === 'spell') {
+        return `<div class="note-item note-spell"><span class="note-icon">🔴</span><div class="note-body"><span class="note-word">${escHtml(iss.word)}</span> — possible spelling error. Did you mean <span class="note-sugg">${escHtml(iss.suggestion)}</span>?</div></div>`;
+      } else {
+        return `<div class="note-item note-gram"><span class="note-icon">🟡</span><div class="note-body">${escHtml(iss.msg)}</div></div>`;
+      }
+    }).filter(Boolean);
+    notesEl.innerHTML = items.join('') || '';
+  }
+
+  // Make sure spell & grammar tab is active
+  showRTab(taskNum, 'check');
+}
+
+function showRTab(taskNum, tab) {
+  const tabs = ['check','ideal','score'];
+  tabs.forEach(t => {
+    document.getElementById('r' + taskNum + '-' + t).style.display = t === tab ? '' : 'none';
+  });
+  // Update tab button states
+  const panel = document.getElementById('review' + taskNum);
+  panel.querySelectorAll('.rtab').forEach((btn, i) => {
+    btn.classList.toggle('active', tabs[i] === tab);
+  });
+}
+
+// ── Self-scoring rubric ──
+const starScores = {}; // id → 1-5
+
+function setScore(id, stars) {
+  starScores[id] = stars;
+  // Light up stars
+  const container = document.getElementById(id);
+  container.querySelectorAll('span').forEach((s, i) => {
+    s.classList.toggle('lit', i < stars);
+  });
+  // Map stars → band: 1→5, 2→5.5, 3→6, 4→6.5, 5→7
+  const bandMap = [0,5,5.5,6,6.5,7];
+  const band = bandMap[stars] || '—';
+  const bandEl = document.getElementById('s' + id.slice(1));
+  if (bandEl) bandEl.textContent = 'Band ' + band;
+  // Recalculate task total
+  const prefix = id.split('-')[0]; // e.g. 's1'
+  const tNum = prefix[1]; // '1' or '2'
+  recalcTotal(tNum);
+}
+
+function recalcTotal(tNum) {
+  const criteria = ['ta','cc','lr','gr'];
+  const vals = criteria.map(c => starScores[`s${tNum}-${c}`] || 0);
+  const filled = vals.filter(v => v > 0);
+  if (!filled.length) { document.getElementById('t'+tNum+'-total').textContent = '—'; return; }
+  const avg = filled.reduce((a,b)=>a+b,0) / filled.length;
+  const bandMap = [0,5,5.5,6,6.5,7];
+  const idx = Math.round(avg);
+  const band = bandMap[Math.min(idx, 5)];
+  document.getElementById('t'+tNum+'-total').textContent = 'Band ' + band;
 }
 </script>
 </body>
