@@ -212,6 +212,18 @@ body{font-family:var(--sans);background:#fff;color:var(--gray-800);min-height:10
 .rubric-band{font-size:13px;font-weight:700;color:var(--navy);min-width:40px;text-align:right}
 .self-total{font-size:15px;text-align:center;padding:14px;background:var(--blue-light);border-radius:var(--radius);color:var(--navy)}
 .self-total strong{font-size:22px}
+
+/* VOICE SELECTOR */
+.voice-setup{background:var(--gray-50);border:1px solid var(--gray-200);border-radius:var(--radius);padding:14px 16px;margin-bottom:14px}
+.voice-setup-title{font-size:12px;font-weight:600;color:var(--gray-600);text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px}
+.voice-row{display:flex;align-items:center;gap:8px;margin-bottom:8px;flex-wrap:wrap}
+.voice-row:last-child{margin-bottom:0}
+.voice-label{font-size:12px;font-weight:600;padding:2px 8px;border-radius:3px;flex-shrink:0;min-width:90px}
+.voice-select{font-size:12px;font-family:var(--sans);border:1px solid var(--gray-200);border-radius:6px;padding:5px 8px;background:#fff;color:var(--gray-800);cursor:pointer;flex:1;min-width:140px;max-width:280px}
+.voice-select:focus{outline:none;border-color:var(--blue)}
+.preview-btn{font-size:11px;font-family:var(--sans);border:1px solid var(--gray-200);border-radius:6px;padding:5px 10px;background:#fff;color:var(--gray-600);cursor:pointer;flex-shrink:0;transition:all .15s;white-space:nowrap}
+.preview-btn:hover{border-color:var(--navy);color:var(--navy)}
+.preview-btn.previewing{background:var(--navy);color:#fff;border-color:var(--navy)}
 </style>
 </head>
 <body>
@@ -254,15 +266,24 @@ body{font-family:var(--sans);background:#fff;color:var(--gray-800);min-height:10
       <div class="audio-note">Social context — two speakers</div>
     </div>
   </div>
-  <div class="voice-legend">
-    <span class="voice-chip vc-A"><span class="vc-dot"></span>Receptionist — Voice 1</span>
-    <span class="voice-chip vc-B"><span class="vc-dot"></span>James — Voice 2</span>
+  <div class="voice-setup" id="vs1">
+    <div class="voice-setup-title">🎙 Choose voices — Part 1</div>
+    <div class="voice-row">
+      <span class="voice-label spk-tag spk-A">Receptionist</span>
+      <select class="voice-select" id="vsel-1-A" onchange="assignVoice(1,'A',this.value)"><option>Loading voices…</option></select>
+      <button class="preview-btn" id="prev-1-A" onclick="previewVoice(1,'A')">▶ Preview</button>
+    </div>
+    <div class="voice-row">
+      <span class="voice-label spk-tag spk-B">James</span>
+      <select class="voice-select" id="vsel-1-B" onchange="assignVoice(1,'B',this.value)"><option>Loading voices…</option></select>
+      <button class="preview-btn" id="prev-1-B" onclick="previewVoice(1,'B')">▶ Preview</button>
+    </div>
   </div>
   <div class="player">
     <button class="play-btn" id="play1" onclick="toggleAudio(1)">▶</button>
     <div class="progress-wrap">
       <div class="progress-bar"><div class="progress-fill" id="prog1"></div></div>
-      <div class="now-speaking" id="status1">Press ▶ to begin</div>
+      <div class="now-speaking" id="status1">Choose voices above, then press ▶</div>
     </div>
   </div>
   <button class="transcript-toggle" onclick="toggleT('t1')">▼ Show transcript</button>
@@ -299,11 +320,19 @@ body{font-family:var(--sans);background:#fff;color:var(--gray-800);min-height:10
       <div class="audio-note">Monologue — single speaker</div>
     </div>
   </div>
+  <div class="voice-setup" id="vs2">
+    <div class="voice-setup-title">🎙 Choose voice — Part 2</div>
+    <div class="voice-row">
+      <span class="voice-label spk-tag spk-A">Speaker</span>
+      <select class="voice-select" id="vsel-2-mono" onchange="assignVoice(2,'mono',this.value)"><option>Loading voices…</option></select>
+      <button class="preview-btn" id="prev-2-mono" onclick="previewVoice(2,'mono')">▶ Preview</button>
+    </div>
+  </div>
   <div class="player">
     <button class="play-btn" id="play2" onclick="toggleAudio(2)">▶</button>
     <div class="progress-wrap">
       <div class="progress-bar"><div class="progress-fill" id="prog2"></div></div>
-      <div class="now-speaking" id="status2">Press ▶ to begin</div>
+      <div class="now-speaking" id="status2">Choose a voice above, then press ▶</div>
     </div>
   </div>
   <button class="transcript-toggle" onclick="toggleT('t2')">▼ Show transcript</button>
@@ -348,16 +377,29 @@ body{font-family:var(--sans);background:#fff;color:var(--gray-800);min-height:10
       <div class="audio-note">Academic context — three speakers</div>
     </div>
   </div>
-  <div class="voice-legend">
-    <span class="voice-chip vc-A"><span class="vc-dot"></span>Dr Chen — Voice 1</span>
-    <span class="voice-chip vc-B"><span class="vc-dot"></span>Maya — Voice 2</span>
-    <span class="voice-chip vc-C"><span class="vc-dot"></span>Tom — Voice 3</span>
+  <div class="voice-setup" id="vs3">
+    <div class="voice-setup-title">🎙 Choose voices — Part 3</div>
+    <div class="voice-row">
+      <span class="voice-label spk-tag spk-A">Dr Chen</span>
+      <select class="voice-select" id="vsel-3-A" onchange="assignVoice(3,'A',this.value)"><option>Loading voices…</option></select>
+      <button class="preview-btn" id="prev-3-A" onclick="previewVoice(3,'A')">▶ Preview</button>
+    </div>
+    <div class="voice-row">
+      <span class="voice-label spk-tag spk-B">Maya</span>
+      <select class="voice-select" id="vsel-3-B" onchange="assignVoice(3,'B',this.value)"><option>Loading voices…</option></select>
+      <button class="preview-btn" id="prev-3-B" onclick="previewVoice(3,'B')">▶ Preview</button>
+    </div>
+    <div class="voice-row">
+      <span class="voice-label spk-tag spk-C">Tom</span>
+      <select class="voice-select" id="vsel-3-C" onchange="assignVoice(3,'C',this.value)"><option>Loading voices…</option></select>
+      <button class="preview-btn" id="prev-3-C" onclick="previewVoice(3,'C')">▶ Preview</button>
+    </div>
   </div>
   <div class="player">
     <button class="play-btn" id="play3" onclick="toggleAudio(3)">▶</button>
     <div class="progress-wrap">
       <div class="progress-bar"><div class="progress-fill" id="prog3"></div></div>
-      <div class="now-speaking" id="status3">Press ▶ to begin</div>
+      <div class="now-speaking" id="status3">Choose voices above, then press ▶</div>
     </div>
   </div>
   <button class="transcript-toggle" onclick="toggleT('t3')">▼ Show transcript</button>
@@ -419,11 +461,19 @@ body{font-family:var(--sans);background:#fff;color:var(--gray-800);min-height:10
       <div class="audio-note">Academic monologue — lecture format</div>
     </div>
   </div>
+  <div class="voice-setup" id="vs4">
+    <div class="voice-setup-title">🎙 Choose voice — Part 4</div>
+    <div class="voice-row">
+      <span class="voice-label spk-tag spk-A">Lecturer</span>
+      <select class="voice-select" id="vsel-4-mono" onchange="assignVoice(4,'mono',this.value)"><option>Loading voices…</option></select>
+      <button class="preview-btn" id="prev-4-mono" onclick="previewVoice(4,'mono')">▶ Preview</button>
+    </div>
+  </div>
   <div class="player">
     <button class="play-btn" id="play4" onclick="toggleAudio(4)">▶</button>
     <div class="progress-wrap">
       <div class="progress-bar"><div class="progress-fill" id="prog4"></div></div>
-      <div class="now-speaking" id="status4">Press ▶ to begin</div>
+      <div class="now-speaking" id="status4">Choose a voice above, then press ▶</div>
     </div>
   </div>
   <button class="transcript-toggle" onclick="toggleT('t4')">▼ Show transcript</button>
@@ -792,65 +842,241 @@ const AUDIO = {
 };
 
 /* ═══════════════════════════════════════════════════════════
-   VOICE ENGINE
-   - Loads all browser voices
-   - Assigns a distinct voice per speaker slot (part + letter)
-   - Falls back gracefully if few voices available
-   - Uses pitch offset to further distinguish speakers
+   VOICE ENGINE — Edge/Chrome/Safari safe
+   Fixes:
+   1. Edge voices load late — poll with retries until ready
+   2. Long utterances cut off at ~14s — split into sentences,
+      chain each sentence as a separate utterance
+   3. Edge pauses synth after ~15s idle — keepalive ping
 ═══════════════════════════════════════════════════════════ */
 const synth = window.speechSynthesis;
-let voicePool = [];   // English voices available
-const assigned = {};  // key "part-spkLetter" → voice object
+let voicePool = [];
+const assigned = {};
 
-function loadVoices() {
+const SLOTS = {
+  1: ['A','B'],
+  2: ['mono'],
+  3: ['A','B','C'],
+  4: ['mono']
+};
+
+const PREVIEW_LINES = {
+  '1-A':    "Good afternoon. How can I help you today?",
+  '1-B':    "Hello, I'd like to find out about joining as a member.",
+  '2-mono': "Good morning and welcome. I'm here to explain our new recycling programme.",
+  '3-A':    "So, how is the research project coming along?",
+  '3-B':    "We've finished the data collection phase across three cities.",
+  '3-C':    "We were quite surprised by the results of the survey.",
+  '4-mono': "Today I'd like to discuss one of the most transformative inventions in human history."
+};
+
+/* ── Voice loading with retry loop (fixes Edge async delay) ── */
+let voicesLoaded = false;
+let loadAttempts = 0;
+
+function tryLoadVoices() {
   const all = synth.getVoices();
-  // Prefer English; fall back to all
+  if (all.length === 0 && loadAttempts < 30) {
+    // Voices not ready yet — retry in 200ms (up to 6 seconds total)
+    loadAttempts++;
+    setTimeout(tryLoadVoices, 200);
+    return;
+  }
   const en = all.filter(v => v.lang && v.lang.startsWith('en'));
-  voicePool = en.length >= 2 ? en : all;
-}
-if (synth.onvoiceschanged !== undefined) synth.onvoiceschanged = loadVoices;
-setTimeout(loadVoices, 200);
-
-function getVoice(part, spkLetter) {
-  const key = `${part}-${spkLetter}`;
-  if (assigned[key]) return assigned[key];
-  if (!voicePool.length) { loadVoices(); }
-  const pool = voicePool.length ? voicePool : synth.getVoices();
-  if (!pool.length) return null;
-
-  // Collect indices already used by OTHER speakers in this part
-  const usedIdx = Object.entries(assigned)
-    .filter(([k]) => k.startsWith(`${part}-`) && k !== key)
-    .map(([, v]) => pool.indexOf(v));
-
-  // Pick the next available index
-  let idx = 0;
-  while (usedIdx.includes(idx) && idx < pool.length - 1) idx++;
-  assigned[key] = pool[idx];
-  return pool[idx];
+  voicePool = en.length ? en : all;
+  if (voicePool.length && !voicesLoaded) {
+    voicesLoaded = true;
+    populateAllSelects();
+  }
 }
 
-// Pitch offsets per speaker slot to maximise audible difference
-const PITCH = { A: 1.0, B: 1.18, C: 0.82, mono: 1.0 };
+// Fire on event AND on timeout — whichever comes first
+if (typeof synth.onvoiceschanged !== 'undefined') {
+  synth.onvoiceschanged = () => { loadAttempts = 0; tryLoadVoices(); };
+}
+// Also try immediately and after short delays for Edge
+tryLoadVoices();
+setTimeout(tryLoadVoices, 100);
+setTimeout(tryLoadVoices, 500);
+setTimeout(tryLoadVoices, 1500);
+
+/* ── Gender detection from voice name ──────────────────────────
+   Returns 'f' (female), 'm' (male), or 'u' (unknown).
+   Covers Microsoft, Google, Apple and common third-party names.
+─────────────────────────────────────────────────────────────── */
+const FEMALE_PATTERNS = [
+  // Microsoft Natural / Online voices
+  /\b(aria|jenny|michelle|sonia|libby|maisie|clara|neerja|leah|freya|ava|emily|zira|hazel|susan|linda|helen|eva|natasha|karen|catherine|emma|sarah|olivia|elspeth|moira|fiona|abbi|bella|hollie|amber|ivy|mia|abigail|grace)\b/i,
+  // Google
+  /\bgoogle\s+(uk\s+english\s+female|us\s+english\s+female|australian\s+female|female)\b/i,
+  // Apple / macOS / iOS
+  /\b(samantha|victoria|allison|ava|karen|moira|veena|tessa|fiona|serena|amelie|anna|carmit|damayanti|joana|lekha|luciana|mariska|mei-jia|melina|milena|monica|nora|paulina|petra|sangeeta|sinji|taini|tessa|yuna|zosia|montserrat|alice|alva|aurélie|irina|kanya|kiana|kyoko|lili|linh|luciana|nora|paulina|satu|sin-ji|soledad|taini|tessa|ting-ting|yuna)\b/i,
+  // Generic keywords
+  /female|woman|girl|feminine/i
+];
+
+const MALE_PATTERNS = [
+  // Microsoft Natural / Online
+  /\b(guy|ryan|william|liam|thomas|george|oliver|ethan|james|noah|freddie|oliver|aiden|elliot|jack|harry|lewis|callum|rory|eric|jacob|nathan|andrew|daniel)\b/i,
+  // Google
+  /\bgoogle\s+(uk\s+english\s+male|us\s+english\s+male|australian\s+male|male)\b/i,
+  // Apple / macOS
+  /\b(alex|daniel|fred|junior|lee|rishi|tom|jorge|luca|reed|eddy|ralph|rocko|whisper|albert|bad|bahh|bells|boing|bruce|bubbles|cellos|deranged|good|hysterical|jester|kathy|trinoids|vicki|pipe)\b/i,
+  // Generic keywords
+  /\bmale\b|man\b|\bguy\b|masculine/i
+];
+
+function detectGender(voice) {
+  const name = (voice.name || '') + ' ' + (voice.lang || '');
+  for (const re of FEMALE_PATTERNS) if (re.test(name)) return 'f';
+  for (const re of MALE_PATTERNS)   if (re.test(name)) return 'm';
+  return 'u';
+}
+
+/* ── Expected gender per character slot ── */
+const CHAR_GENDER = {
+  '1-A':    'f',   // Receptionist (female)
+  '1-B':    'm',   // James (male)
+  '2-mono': 'f',   // Community speaker (female)
+  '3-A':    'f',   // Dr Chen (female)
+  '3-B':    'f',   // Maya (female)
+  '3-C':    'm',   // Tom (male)
+  '4-mono': 'm',   // Lecturer (male)
+};
+
+function populateAllSelects() {
+  Object.entries(SLOTS).forEach(([part, slots]) => {
+    slots.forEach((slot, slotIdx) => {
+      const sel = document.getElementById(`vsel-${part}-${slot}`);
+      if (!sel) return;
+      sel.innerHTML = '';
+
+      // Sort voices: female first, then male, then unknown — within each group preserve order
+      const sorted = [...voicePool].map((v, i) => ({ v, i, g: detectGender(v) }));
+      sorted.sort((a, b) => {
+        const order = { f: 0, m: 1, u: 2 };
+        return (order[a.g] ?? 2) - (order[b.g] ?? 2);
+      });
+
+      sorted.forEach(({ v, i, g }) => {
+        const opt = document.createElement('option');
+        opt.value = i;
+        const icon = g === 'f' ? '♀ ' : g === 'm' ? '♂ ' : '◇ ';
+        const cleanName = v.name
+          .replace(/^Microsoft\s+/,'')
+          .replace(/^Google\s+/,'')
+          .replace(/\s+Online\s*\(Natural\)\s*/i,' ')
+          .replace(/\s+Desktop\s*/i,' ')
+          .trim();
+        opt.textContent = icon + cleanName + ' — ' + v.lang;
+        sel.appendChild(opt);
+      });
+
+      // Auto-select: pick a voice that suits the character's typical gender
+      const charGender = CHAR_GENDER[`${part}-${slot}`] || 'u';
+      const preferred = sorted.findIndex(({ g }) => g === charGender);
+      const defaultEntry = preferred >= 0 ? sorted[preferred] : sorted[slotIdx % sorted.length];
+      // Find the option with the matching original index
+      const matchingOpt = Array.from(sel.options).find(o => o.value == defaultEntry.i);
+      if (matchingOpt) {
+        matchingOpt.selected = true;
+        assigned[`${part}-${slot}`] = voicePool[defaultEntry.i];
+      } else {
+        sel.selectedIndex = 0;
+        assigned[`${part}-${slot}`] = voicePool[sorted[0].i];
+      }
+    });
+  });
+}
+
+function assignVoice(part, slot, idxStr) {
+  const v = voicePool[parseInt(idxStr)];
+  if (v) assigned[`${part}-${slot}`] = v;
+}
+
+function getVoice(part, slot) {
+  return assigned[`${part}-${slot}`] || voicePool[0] || null;
+}
+
+/* ── Sentence splitter (keeps punctuation, handles abbreviations) ── */
+function splitSentences(text) {
+  // Split on . ! ? followed by space+capital or end of string
+  // Keep each chunk non-empty and trim whitespace
+  const raw = text.match(/[^.!?]+[.!?]+["']?|[^.!?]+$/g) || [text];
+  return raw.map(s => s.trim()).filter(s => s.length > 0);
+}
+
+/* ── Edge keepalive: synth pauses if queue goes idle for >10s ── */
+let keepAliveInterval = null;
+function startKeepAlive() {
+  stopKeepAlive();
+  keepAliveInterval = setInterval(() => {
+    if (synth.speaking) {
+      // Pause/resume trick keeps Edge's internal timer reset
+      synth.pause();
+      synth.resume();
+    }
+  }, 10000);
+}
+function stopKeepAlive() {
+  if (keepAliveInterval) { clearInterval(keepAliveInterval); keepAliveInterval = null; }
+}
+
+/* ── Preview ── */
+let previewActive = null;
+
+function previewVoice(part, slot) {
+  synth.cancel();
+  stopKeepAlive();
+  document.querySelectorAll('.preview-btn').forEach(b => {
+    b.textContent = '▶ Preview'; b.classList.remove('previewing');
+  });
+  const btnId = `prev-${part}-${slot}`;
+  const btn = document.getElementById(btnId);
+  if (previewActive === btnId) { previewActive = null; return; }
+
+  previewActive = btnId;
+  btn.textContent = '⏹ Stop'; btn.classList.add('previewing');
+
+  const voice = getVoice(part, slot);
+  const text  = PREVIEW_LINES[`${part}-${slot}`] || 'Hello, this is a preview of my voice.';
+  const u = new SpeechSynthesisUtterance(text);
+  u.rate = 0.9; u.pitch = 1.0; u.volume = 1;
+  if (voice) u.voice = voice;
+  u.onend = u.onerror = () => {
+    btn.textContent = '▶ Preview'; btn.classList.remove('previewing');
+    if (previewActive === btnId) previewActive = null;
+  };
+  synth.speak(u);
+}
 
 /* ═══════════════════════════════════════════════════════════
    PLAYBACK CONTROLLER
+   All audio is broken into individual sentences before
+   being queued, so no single utterance exceeds ~10 seconds.
+   This prevents Edge/Chrome from silently dropping audio.
 ═══════════════════════════════════════════════════════════ */
 let activePart = null;
 
 function toggleAudio(part) {
   if (activePart === part) {
     synth.cancel();
+    stopKeepAlive();
     activePart = null;
     setBtn(part, false);
     setStatus(part, 'Stopped');
     return;
   }
-  // Stop any other playing audio
   synth.cancel();
-  if (activePart !== null) { setBtn(activePart, false); }
+  stopKeepAlive();
+  document.querySelectorAll('.preview-btn').forEach(b => {
+    b.textContent = '▶ Preview'; b.classList.remove('previewing');
+  });
+  previewActive = null;
+  if (activePart !== null) setBtn(activePart, false);
   activePart = part;
   setBtn(part, true);
+  startKeepAlive();
 
   const data = AUDIO[part];
   if (typeof data === 'string') {
@@ -861,57 +1087,91 @@ function toggleAudio(part) {
   }
 }
 
-function playMonologue(part, text) {
-  const pool = voicePool.length ? voicePool : synth.getVoices();
-  // Pick a distinct voice for monologue parts
-  const idx = (part === 2) ? Math.min(2, pool.length - 1) : Math.min(3, pool.length - 1);
-  const voice = pool[idx] || pool[0] || null;
-  const words = text.split(' ');
-  const u = new SpeechSynthesisUtterance(text);
-  u.rate = 0.87; u.pitch = PITCH.mono; u.volume = 1;
-  if (voice) u.voice = voice;
+/* ── Monologue: split into sentences, speak one by one ── */
+function playMonologue(part, fullText) {
+  const voice = getVoice(part, 'mono');
+  const sentences = splitSentences(fullText);
+  const totalWords = fullText.split(' ').length;
+  let spokenWords = 0;
   setStatus(part, 'Speaking…');
-  let wc = 0;
-  u.onboundary = e => {
-    if (e.name === 'word') setProgress(part, Math.min((++wc / words.length) * 100, 100));
-  };
-  u.onend = () => {
+
+  function speakNext(i) {
     if (activePart !== part) return;
-    activePart = null; setBtn(part, false);
-    setProgress(part, 100); setStatus(part, 'Finished ✓');
-  };
-  synth.speak(u);
+    if (i >= sentences.length) {
+      stopKeepAlive();
+      activePart = null; setBtn(part, false);
+      setProgress(part, 100); setStatus(part, 'Finished ✓');
+      return;
+    }
+    const sentWords = sentences[i].split(' ').length;
+    const u = new SpeechSynthesisUtterance(sentences[i]);
+    u.rate = 0.87; u.pitch = 1.0; u.volume = 1;
+    if (voice) u.voice = voice;
+    let wc = 0;
+    u.onboundary = e => {
+      if (e.name === 'word') {
+        setProgress(part, Math.min(((spokenWords + (++wc)) / totalWords) * 100, 100));
+      }
+    };
+    u.onend = () => {
+      spokenWords += sentWords;
+      speakNext(i + 1);
+    };
+    u.onerror = e => {
+      // Skip errored sentence and continue
+      if (e.error !== 'interrupted') { spokenWords += sentWords; speakNext(i + 1); }
+    };
+    synth.speak(u);
+  }
+  speakNext(0);
 }
 
-function playTurn(part, turns, idx, doneWords, totalWords) {
+/* ── Dialogue: each turn is itself split into sentences ── */
+function playTurn(part, turns, turnIdx, doneWords, totalWords) {
   if (activePart !== part) return;
-  if (idx >= turns.length) {
+  if (turnIdx >= turns.length) {
+    stopKeepAlive();
     activePart = null; setBtn(part, false);
     setProgress(part, 100); setStatus(part, 'Finished ✓');
     return;
   }
-  const turn = turns[idx];
+  const turn = turns[turnIdx];
   setStatus(part, `Now speaking: ${turn.name}`);
 
-  const words = turn.text.split(' ');
-  const u = new SpeechSynthesisUtterance(turn.text);
-  u.rate = 0.87; u.volume = 1;
-  u.pitch = PITCH[turn.spk] || 1.0;
   const voice = getVoice(part, turn.spk);
-  if (voice) u.voice = voice;
+  const sentences = splitSentences(turn.text);
+  const turnWords = turn.text.split(' ').length;
+  let spokenInTurn = 0;
 
-  let wc = 0;
-  u.onboundary = e => {
-    if (e.name === 'word') {
-      setProgress(part, Math.min(((doneWords + (++wc)) / totalWords) * 100, 100));
-    }
-  };
-  u.onend = () => {
+  function speakNextSentence(si) {
     if (activePart !== part) return;
-    // Natural pause between speaker turns (~350ms)
-    setTimeout(() => playTurn(part, turns, idx + 1, doneWords + words.length, totalWords), 350);
-  };
-  synth.speak(u);
+    if (si >= sentences.length) {
+      // Pause between speaker turns, then move to next turn
+      setTimeout(() => {
+        playTurn(part, turns, turnIdx + 1, doneWords + turnWords, totalWords);
+      }, 350);
+      return;
+    }
+    const sentWords = sentences[si].split(' ').length;
+    const u = new SpeechSynthesisUtterance(sentences[si]);
+    u.rate = 0.87; u.pitch = 1.0; u.volume = 1;
+    if (voice) u.voice = voice;
+    let wc = 0;
+    u.onboundary = e => {
+      if (e.name === 'word') {
+        setProgress(part, Math.min(((doneWords + spokenInTurn + (++wc)) / totalWords) * 100, 100));
+      }
+    };
+    u.onend = () => {
+      spokenInTurn += sentWords;
+      speakNextSentence(si + 1);
+    };
+    u.onerror = e => {
+      if (e.error !== 'interrupted') { spokenInTurn += sentWords; speakNextSentence(si + 1); }
+    };
+    synth.speak(u);
+  }
+  speakNextSentence(0);
 }
 
 function setBtn(part, playing) {
